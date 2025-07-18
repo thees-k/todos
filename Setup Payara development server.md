@@ -93,7 +93,7 @@ Change connection pool "myH2Pool" to:
 
 So just add the line `<property name="password" value=""></property>`
 
-## 12. Star the server
+## 12. Start the server
 
 ```bash
 bin/asadmin start-domain
