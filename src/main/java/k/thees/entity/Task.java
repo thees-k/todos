@@ -9,6 +9,7 @@ import java.util.Set;
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "BIGINT AUTO_INCREMENT")
     private Long id;
 
     @Column(nullable = false)

@@ -10,7 +10,7 @@
             <property name="eclipselink.logging.level" value="FINEST" />
             <property name="eclipselink.logging.parameters" value="true" />
             <property name="jakarta.persistence.sql-load-script-source" value="META-INF/initial-data.sql"/>
-            <!-- <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.H2Platform"/> -->
+            <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.H2Platform"/>
         </properties>
     </persistence-unit>
 </persistence>

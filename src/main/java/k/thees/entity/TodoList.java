@@ -9,6 +9,7 @@ import java.util.Set;
 public class TodoList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "BIGINT AUTO_INCREMENT")
     private Long id;
 
     @ManyToOne(optional = false)
