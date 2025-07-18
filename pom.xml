@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>k.thees</groupId>
@@ -16,7 +17,7 @@
         <payara.version>6.2025.6</payara.version>
         <payara.home>payara6</payara.home>
     </properties>
-    
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -33,7 +34,7 @@
         <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-web-api</artifactId>
-            <version>10.0.0</version>            
+            <version>10.0.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -72,16 +73,34 @@
             </plugin>
             <!-- Execute 'mvn clean package payara-server:dev' to run the application. -->
             <plugin>
-                    <groupId>fish.payara.maven.plugins</groupId>
-                    <artifactId>payara-server-maven-plugin</artifactId>
-                    <version>1.0.0-Alpha1</version>
-                    <configuration>
-                        <payaraServerVersion>${payara.version}</payaraServerVersion>
-                    </configuration>
+                <groupId>fish.payara.maven.plugins</groupId>
+                <artifactId>payara-server-maven-plugin</artifactId>
+                <version>1.0.0-Alpha1</version>
+                <configuration>
+                    <payaraServerVersion>${payara.version}</payaraServerVersion>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>11.10.3</version>
+                <configuration>
+                    <!-- <url>jdbc:h2:file:./data/todos;DB_CLOSE_DELAY=-1</url> -->
+                    <url>jdbc:h2:file:/tmp/payara-server-6.2025.6/payara6/glassfish/domains/domain1/config/data/todos;DB_CLOSE_DELAY=-1</url>
+                    <user>sa</user>
+                    <password/>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>2.3.232</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
-    
+
     <repositories>
         <repository>
             <id>payara-nexus-artifacts</id>
@@ -94,8 +113,8 @@
             </snapshots>
         </repository>
     </repositories>
-    
-    
+
+
     <profiles>
     </profiles>
 

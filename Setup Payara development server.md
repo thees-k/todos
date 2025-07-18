@@ -56,7 +56,7 @@ bin/asadmin list-jdbc-connection-resources
 bin/asadmin create-jdbc-connection-pool \
 --datasourceclassname=org.h2.jdbcx.JdbcDataSource \
 --restype=javax.sql.DataSource \
---property user=sa:URL="jdbc\:h2\:mem\:todos\;DB_CLOSE_DELAY\=-1" \
+--property user=sa:URL="jdbc\:h2\:file\:./data/todos\;DB_CLOSE_DELAY\=-1" \
 myH2Pool 
 ```
 
@@ -87,7 +87,7 @@ Change connection pool "myH2Pool" to:
 <jdbc-connection-pool datasource-classname="org.h2.jdbcx.JdbcDataSource" name="myH2Pool" res-type="javax.sql.DataSource">
   <property name="user" value="sa"></property>
   <property name="password" value=""></property>
-  <property name="URL" value="jdbc:h2:mem:todos;DB_CLOSE_DELAY=-1"></property>
+  <property name="URL" value="jdbc:h2:file:./data/todos;DB_CLOSE_DELAY=-1"></property>
 </jdbc-connection-pool>
 ```
 

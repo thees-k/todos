@@ -8,8 +8,8 @@ import java.util.Set;
 @Table(name = "todo_lists")
 public class TodoList {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "BIGINT AUTO_INCREMENT")
+    @SequenceGenerator(name = "todo_lists_seq", sequenceName = "todo_lists_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "todo_lists_seq")
     private Long id;
 
     @ManyToOne(optional = false)

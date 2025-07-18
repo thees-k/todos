@@ -7,8 +7,12 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "BIGINT AUTO_INCREMENT")
+    @SequenceGenerator(
+            name = "users_seq",             // JPA generator name
+            sequenceName = "users_seq",     // actual DB sequence name
+            allocationSize = 1            // matches DB sequence increment
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
     private Long id;
 
     @Column(nullable = false, unique = true, length = 100)
