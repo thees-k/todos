@@ -8,8 +8,7 @@ import java.util.Set;
 @Table(name = "todo_lists")
 public class TodoList {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "todo_list_seq")
-    @SequenceGenerator(name = "todo_list_seq", sequenceName = "todo_list_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(optional = false)

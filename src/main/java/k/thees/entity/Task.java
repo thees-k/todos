@@ -8,8 +8,7 @@ import java.util.Set;
 @Table(name = "tasks")
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_seq")
-    @SequenceGenerator(name = "task_seq", sequenceName = "task_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
