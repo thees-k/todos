@@ -6,10 +6,11 @@
     <persistence-unit name="myPersistenceUnit" transaction-type="JTA">
         <jta-data-source>jdbc/myJtaDataSource</jta-data-source>
         <properties>
-            <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
             <property name="eclipselink.logging.level" value="FINEST" />
             <property name="eclipselink.logging.parameters" value="true" />
             <property name="jakarta.persistence.sql-load-script-source" value="META-INF/initial-data.sql"/>
+            <!-- <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.H2Platform"/> -->
         </properties>
     </persistence-unit>
 </persistence>
