@@ -85,8 +85,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>11.10.3</version>
                 <configuration>
-                    <!-- <url>jdbc:h2:file:./data/todos;DB_CLOSE_DELAY=-1</url> -->
-                    <url>jdbc:h2:file:/tmp/payara-server-6.2025.6/payara6/glassfish/domains/domain1/config/data/todos;DB_CLOSE_DELAY=-1</url>
+                    <url>jdbc:h2:file:~/database/todos;DB_CLOSE_DELAY=-1</url>
                     <user>sa</user>
                     <password/>
                 </configuration>

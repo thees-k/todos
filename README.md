@@ -17,7 +17,7 @@ Create connection pool:
 asadmin create-jdbc-connection-pool \
  --datasourceclassname=org.h2.jdbcx.JdbcDataSource \
  --restype=javax.sql.DataSource \
- --property user=sa:URL="jdbc\:h2\:file\:./data/todos\;DB_CLOSE_DELAY\=-1" \      
+ --property user=sa:URL="jdbc\:h2\:file\:~/database/todos\;DB_CLOSE_DELAY\=-1" \      
  myH2Pool
 ```
 
