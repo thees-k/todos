@@ -5,7 +5,6 @@ import jakarta.persistence.TypedQuery;
 import k.thees.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.lang.reflect.Field;
 import java.util.List;
