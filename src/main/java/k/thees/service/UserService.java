@@ -24,18 +24,15 @@ public class UserService {
         return Optional.ofNullable(entityManager.find(User.class, id));
     }
 
-    @Transactional
     public User create(User user) {
         entityManager.persist(user);
         return user;
     }
 
-    @Transactional
     public User update(User user) {
         return entityManager.merge(user);
     }
 
-    @Transactional
     public boolean delete(Long id) {
         User user = entityManager.find(User.class, id);
         if (user != null) {
