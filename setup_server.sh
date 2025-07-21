@@ -53,4 +53,9 @@ sed -i "/jdbc-connection-pool.*$POOL/ a\\
 $line_to_add
 " "$target_file"
 
+if [ $? -ne 0 ]; then
+  echo "Updating of \"$target_file\" failed."
+  exit 1
+fi
+
 echo -e "\nServer setup successfully executed!"
