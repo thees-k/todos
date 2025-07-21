@@ -123,11 +123,11 @@ public class TodoList {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         TodoList todoList = (TodoList) o;
-        return Objects.equals(id, todoList.id) && Objects.equals(owner, todoList.owner) && Objects.equals(name, todoList.name) && Objects.equals(description, todoList.description) && Objects.equals(isPublic, todoList.isPublic) && Objects.equals(isDone, todoList.isDone) && Objects.equals(createdAt, todoList.createdAt) && Objects.equals(updatedAt, todoList.updatedAt) && Objects.equals(updatedBy, todoList.updatedBy) && Objects.equals(tasks, todoList.tasks);
+        return Objects.equals(id, todoList.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, owner, name, description, isPublic, isDone, createdAt, updatedAt, updatedBy, tasks);
+        return Objects.hashCode(id);
     }
 }

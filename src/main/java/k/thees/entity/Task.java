@@ -95,11 +95,11 @@ public class Task {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(title, task.title) && Objects.equals(description, task.description) && Objects.equals(isDone, task.isDone) && Objects.equals(createdAt, task.createdAt) && Objects.equals(updatedAt, task.updatedAt) && Objects.equals(updatedBy, task.updatedBy) && Objects.equals(todoLists, task.todoLists);
+        return Objects.equals(id, task.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, isDone, createdAt, updatedAt, updatedBy, todoLists);
+        return Objects.hashCode(id);
     }
 }

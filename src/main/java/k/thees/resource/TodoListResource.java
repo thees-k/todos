@@ -4,11 +4,14 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import k.thees.dto.TodoListDTO;
 import k.thees.entity.TodoList;
+import k.thees.mapper.TodoListMapper;
 import k.thees.service.TodoListService;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/todolists")
 @Produces(MediaType.APPLICATION_JSON)
@@ -19,31 +22,39 @@ public class TodoListResource {
     private TodoListService todoListService;
 
     @GET
-    public List<TodoList> getAllTodoLists() {
-        return todoListService.findAll();
+    public List<TodoListDTO> getAllTodoLists() {
+        List<TodoList> todoLists = todoListService.findAll();
+        return todoLists.stream()
+                .map(TodoListMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @GET
     @Path("/{id}")
     public Response getTodoList(@PathParam("id") Long id) {
         return todoListService.findById(id)
+                .map(TodoListMapper::toDTO)
                 .map(Response::ok)
                 .orElse(Response.status(Response.Status.NOT_FOUND))
                 .build();
     }
 
     @POST
-    public Response createTodoList(TodoList todoList) {
+    public Response createTodoList(TodoListDTO todoListDTO) {
+        TodoList todoList = TodoListMapper.toEntity(todoListDTO);
         TodoList created = todoListService.create(todoList);
-        return Response.created(URI.create("/api/todolists/" + created.getId())).entity(created).build();
+        TodoListDTO createdDTO = TodoListMapper.toDTO(created);
+        return Response.created(URI.create("/api/todolists/" + createdDTO.id)).entity(createdDTO).build();
     }
 
     @PUT
     @Path("/{id}")
-    public Response updateTodoList(@PathParam("id") Long id, TodoList todoList) {
-        todoList.setId(id);
+    public Response updateTodoList(@PathParam("id") Long id, TodoListDTO todoListDTO) {
+        todoListDTO.id = id; // set id from path param
+        TodoList todoList = TodoListMapper.toEntity(todoListDTO);
         TodoList updated = todoListService.update(todoList);
-        return Response.ok(updated).build();
+        TodoListDTO updatedDTO = TodoListMapper.toDTO(updated);
+        return Response.ok(updatedDTO).build();
     }
 
     @DELETE
