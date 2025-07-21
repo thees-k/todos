@@ -7,11 +7,10 @@ public class TaskListAssignmentId implements Serializable {
     private Long task;
     private Long list;
 
-    // equals() and hashCode()
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TaskListAssignmentId that)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+        TaskListAssignmentId that = (TaskListAssignmentId) o;
         return Objects.equals(task, that.task) && Objects.equals(list, that.list);
     }
 

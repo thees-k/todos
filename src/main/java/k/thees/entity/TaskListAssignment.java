@@ -2,6 +2,7 @@ package k.thees.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "task_list_assignments")
@@ -69,5 +70,17 @@ public class TaskListAssignment {
 
     public void setUpdatedBy(User updatedBy) {
         this.updatedBy = updatedBy;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        TaskListAssignment that = (TaskListAssignment) o;
+        return priority == that.priority && Objects.equals(task, that.task) && Objects.equals(list, that.list) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(updatedBy, that.updatedBy);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(task, list, priority, createdAt, updatedAt, updatedBy);
     }
 }
