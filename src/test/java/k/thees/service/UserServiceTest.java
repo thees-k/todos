@@ -5,114 +5,107 @@ import jakarta.persistence.TypedQuery;
 import k.thees.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Field;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
+    @InjectMocks
     private UserService userService;
+
+    @Mock
     private EntityManager entityManager;
 
-    @BeforeEach
-    void setUp() throws Exception {
-        userService = new UserService();
-        entityManager = mock(EntityManager.class);
-        Field emField = UserService.class.getDeclaredField("entityManager");
-        emField.setAccessible(true);
-        emField.set(userService, entityManager);
-    }
-
     @Test
-    void findAll_returnsListOfUsers() {
+    void findAll_shouldReturnListOfUsers() {
+        User alice = createUser(1, "Alice", "alice@example.com", "hash1");
+        User bob = createUser(2, "Bob", "bob@example.com", "hash2");
+        List<User> mockUsers = Arrays.asList(alice, bob);
+
         TypedQuery<User> query = mock(TypedQuery.class);
-        List<User> users = List.of(new User(), new User());
+        when(entityManager.createQuery("SELECT u FROM User u ORDER BY u.id", User.class)).thenReturn(query);
+        when(query.getResultList()).thenReturn(mockUsers);
 
-        when(entityManager.createQuery("SELECT u FROM User u", User.class)).thenReturn(query);
-        when(query.getResultList()).thenReturn(users);
-
-        List<User> result = userService.findAll();
-
-        assertEquals(users, result);
-        verify(entityManager).createQuery("SELECT u FROM User u", User.class);
-        verify(query).getResultList();
+        assertEquals(mockUsers, userService.findAll());
     }
 
     @Test
-    void findById_existingUser_returnsUser() {
-        User user = new User();
-        user.setId(1L);
-
-        when(entityManager.find(User.class, 1L)).thenReturn(user);
+    void findById_existingId_shouldReturnUser() {
+        User alice = createUser(1, "Alice", "alice@example.com", "hash1");
+        when(entityManager.find(User.class, 1L)).thenReturn(alice);
 
         Optional<User> result = userService.findById(1L);
 
         assertTrue(result.isPresent());
-        assertEquals(user, result.get());
-        verify(entityManager).find(User.class, 1L);
+        assertEquals(alice, result.get());
     }
 
     @Test
-    void findById_nonExistingUser_returnsEmpty() {
-        when(entityManager.find(User.class, 2L)).thenReturn(null);
+    void findById_nonExistingId_shouldReturnEmptyOptional() {
+        long id = 99L;
+        when(entityManager.find(User.class, id)).thenReturn(null);
 
-        Optional<User> result = userService.findById(2L);
+        Optional<User> result = userService.findById(id);
 
-        assertTrue(result.isEmpty());
-        verify(entityManager).find(User.class, 2L);
+        assertFalse(result.isPresent());
     }
 
     @Test
-    void create_persistsUserAndReturnsIt() {
-        User user = new User();
+    void create_shouldPersistAndReturnUser() {
+        User alice = createUser(1, "Alice", "alice@example.com", "hash1");
 
-        doNothing().when(entityManager).persist(user);
+        User result = userService.create(alice);
 
-        User result = userService.create(user);
-
-        assertEquals(user, result);
-        verify(entityManager).persist(user);
+        verify(entityManager).persist(alice);
+        assertEquals(alice, result);
     }
 
     @Test
-    void update_mergesUserAndReturnsMerged() {
-        User user = new User();
-        User mergedUser = new User();
+    void update_shouldMergeAndReturnUpdatedUser() {
+        User alice = createUser(1, "Alice", "alice@example.com", "hash1");
+        when(entityManager.merge(alice)).thenReturn(alice);
 
-        when(entityManager.merge(user)).thenReturn(mergedUser);
+        User result = userService.update(alice);
 
-        User result = userService.update(user);
-
-        assertEquals(mergedUser, result);
-        verify(entityManager).merge(user);
+        verify(entityManager).merge(alice);
+        assertEquals(alice, result);
     }
 
     @Test
-    void delete_existingUser_removesUserAndReturnsTrue() {
-        User user = new User();
+    void delete_existingId_shouldRemoveUserAndReturnTrue() {
+        User alice = createUser(1, "Alice", "alice@example.com", "hash1");
+        when(entityManager.find(User.class, alice.getId())).thenReturn(alice);
 
-        when(entityManager.find(User.class, 1L)).thenReturn(user);
-        doNothing().when(entityManager).remove(user);
+        boolean result = userService.delete(alice.getId());
 
-        boolean result = userService.delete(1L);
-
+        verify(entityManager).remove(alice);
         assertTrue(result);
-        verify(entityManager).find(User.class, 1L);
-        verify(entityManager).remove(user);
     }
 
     @Test
-    void delete_nonExistingUser_returnsFalse() {
-        when(entityManager.find(User.class, 2L)).thenReturn(null);
+    void delete_nonExistingId_shouldReturnFalse() {
+        long id = 99L;
+        when(entityManager.find(User.class, id)).thenReturn(null);
 
-        boolean result = userService.delete(2L);
+        boolean result = userService.delete(id);
 
-        assertFalse(result);
-        verify(entityManager).find(User.class, 2L);
         verify(entityManager, never()).remove(any());
+        assertFalse(result);
+    }
+
+    private User createUser(long id, String userName, String email, String passwordHash) {
+        var user = new User();
+        user.setId(id);
+        user.setUsername(userName);
+        user.setEmail(email);
+        user.setPasswordHash(passwordHash);
+        return user;
     }
 }

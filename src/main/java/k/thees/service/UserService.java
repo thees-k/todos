@@ -17,7 +17,7 @@ public class UserService {
     private EntityManager entityManager;
 
     public List<User> findAll() {
-        return entityManager.createQuery("SELECT u FROM User u", User.class).getResultList();
+        return entityManager.createQuery("SELECT u FROM User u ORDER BY u.id", User.class).getResultList();
     }
 
     public Optional<User> findById(Long id) {
