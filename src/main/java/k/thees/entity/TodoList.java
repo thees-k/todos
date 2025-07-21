@@ -2,6 +2,7 @@ package k.thees.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -116,5 +117,17 @@ public class TodoList {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        TodoList todoList = (TodoList) o;
+        return Objects.equals(id, todoList.id) && Objects.equals(owner, todoList.owner) && Objects.equals(name, todoList.name) && Objects.equals(description, todoList.description) && Objects.equals(isPublic, todoList.isPublic) && Objects.equals(isDone, todoList.isDone) && Objects.equals(createdAt, todoList.createdAt) && Objects.equals(updatedAt, todoList.updatedAt) && Objects.equals(updatedBy, todoList.updatedBy) && Objects.equals(tasks, todoList.tasks);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, owner, name, description, isPublic, isDone, createdAt, updatedAt, updatedBy, tasks);
     }
 }
