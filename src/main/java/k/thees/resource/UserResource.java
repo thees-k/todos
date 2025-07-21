@@ -4,11 +4,14 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import k.thees.dto.UserDTO;
 import k.thees.entity.User;
+import k.thees.mapper.UserMapper;
 import k.thees.service.UserService;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -19,31 +22,39 @@ public class UserResource {
     private UserService userService;
 
     @GET
-    public List<User> getAllUsers() {
-        return userService.findAll();
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userService.findAll();
+        return users.stream()
+                .map(UserMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @GET
     @Path("/{id}")
     public Response getUser(@PathParam("id") Long id) {
         return userService.findById(id)
+                .map(UserMapper::toDTO)
                 .map(Response::ok)
                 .orElse(Response.status(Response.Status.NOT_FOUND))
                 .build();
     }
 
     @POST
-    public Response createUser(User user) {
+    public Response createUser(UserDTO userDTO) {
+        User user = UserMapper.toEntity(userDTO);
         User created = userService.create(user);
-        return Response.created(URI.create("/api/users/" + created.getId())).entity(created).build();
+        UserDTO createdDTO = UserMapper.toDTO(created);
+        return Response.created(URI.create("/api/users/" + createdDTO.id)).entity(createdDTO).build();
     }
 
     @PUT
     @Path("/{id}")
-    public Response updateUser(@PathParam("id") Long id, User user) {
-        user.setId(id); // assume your entity allows this
+    public Response updateUser(@PathParam("id") Long id, UserDTO userDTO) {
+        userDTO.id = id; // set id from path param
+        User user = UserMapper.toEntity(userDTO);
         User updated = userService.update(user);
-        return Response.ok(updated).build();
+        UserDTO updatedDTO = UserMapper.toDTO(updated);
+        return Response.ok(updatedDTO).build();
     }
 
     @DELETE
