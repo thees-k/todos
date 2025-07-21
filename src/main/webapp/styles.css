@@ -1,0 +1,23 @@
+body {
+    background-image: linear-gradient(rgba(0,44,62), rgba(0,44,62,.8), rgba(0,44,62));
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 2rem;
+}
+a {
+    font-weight: bold;
+    color: #00bcd4;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+h1, h2 {
+    color: #00bcd4;
+}
+code {
+    background-color: #002f3f;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: monospace;
+}
