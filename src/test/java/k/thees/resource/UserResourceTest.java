@@ -34,22 +34,22 @@ class UserResourceTest {
 
         List<UserDTO> result = userResource.getAllUsers();
 
-        assertEquals(2, result.size());
-        assertEquals("Alice", result.get(0).username);
-        assertEquals("Bob", result.get(1).username);
+        List<UserDTO> expectedUsers = List.of(UserMapper.toDTO(user1), UserMapper.toDTO(user2));
+        assertEquals(expectedUsers, result);
         verify(userService).findAll();
     }
 
     @Test
     void getUser_existingId_returnsOkResponseWithUserDTO() {
         User user = createUser(1L, "Alice", "alice@example.com");
+        UserDTO expectedDTO = UserMapper.toDTO(user);
         when(userService.findById(1L)).thenReturn(Optional.of(user));
 
         Response response = userResource.getUser(1L);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         UserDTO dto = (UserDTO) response.getEntity();
-        assertEquals("Alice", dto.username);
+        assertEquals(expectedDTO, dto);
         verify(userService).findById(1L);
     }
 
@@ -68,17 +68,21 @@ class UserResourceTest {
         UserDTO inputDTO = new UserDTO();
         inputDTO.username = "Alice";
         inputDTO.email = "alice@example.com";
+        UserMapper.toEntity(inputDTO);
 
-        User userEntity = UserMapper.toEntity(inputDTO);
         User createdUser = createUser(1L, "Alice", "alice@example.com");
+        UserDTO expectedDTO = UserMapper.toDTO(createdUser);
         when(userService.create(any(User.class))).thenReturn(createdUser);
 
-        Response response = userResource.createUser(inputDTO);
-
-        assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
-        assertEquals(URI.create("/api/users/1"), response.getLocation());
-        UserDTO returnedDTO = (UserDTO) response.getEntity();
-        assertEquals("Alice", returnedDTO.username);
+        UserDTO returnedDTO;
+        try (Response response = userResource.createUser(inputDTO)) {
+            assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
+            assertEquals(URI.create("/api/users/1"), response.getLocation());
+            returnedDTO = (UserDTO) response.getEntity();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(expectedDTO, returnedDTO);
         verify(userService).create(any(User.class));
     }
 
@@ -87,16 +91,20 @@ class UserResourceTest {
         UserDTO inputDTO = new UserDTO();
         inputDTO.username = "Updated";
         inputDTO.email = "updated@example.com";
+        UserMapper.toEntity(inputDTO);
 
-        User userEntity = UserMapper.toEntity(inputDTO);
         User updatedUser = createUser(1L, "Updated", "updated@example.com");
+        UserDTO expectedDTO = UserMapper.toDTO(updatedUser);
         when(userService.update(any(User.class))).thenReturn(updatedUser);
 
-        Response response = userResource.updateUser(1L, inputDTO);
-
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        UserDTO returnedDTO = (UserDTO) response.getEntity();
-        assertEquals("Updated", returnedDTO.username);
+        UserDTO returnedDTO;
+        try (Response response = userResource.updateUser(1L, inputDTO)) {
+            assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+            returnedDTO = (UserDTO) response.getEntity();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(expectedDTO, returnedDTO);
         verify(userService).update(any(User.class));
     }
 
@@ -104,9 +112,11 @@ class UserResourceTest {
     void deleteUser_existingId_returnsNoContent() {
         when(userService.delete(1L)).thenReturn(true);
 
-        Response response = userResource.deleteUser(1L);
-
-        assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+        try (Response response = userResource.deleteUser(1L)) {
+            assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         verify(userService).delete(1L);
     }
 
@@ -114,9 +124,11 @@ class UserResourceTest {
     void deleteUser_nonExistingId_returnsNotFound() {
         when(userService.delete(99L)).thenReturn(false);
 
-        Response response = userResource.deleteUser(99L);
-
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        try (Response response = userResource.deleteUser(99L)) {
+            assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         verify(userService).delete(99L);
     }
 
