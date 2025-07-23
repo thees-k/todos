@@ -22,11 +22,12 @@ public class TodoListResource {
     private TodoListService todoListService;
 
     @GET
-    public List<TodoListDTO> getAllTodoLists() {
+    public Response getAllTodoLists() {
         List<TodoList> todoLists = todoListService.findAll();
-        return todoLists.stream()
+        List<TodoListDTO> dtos = todoLists.stream()
                 .map(TodoListMapper::toDTO)
                 .collect(Collectors.toList());
+        return Response.ok(dtos).build();
     }
 
     @GET

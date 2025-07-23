@@ -31,10 +31,12 @@ class UserResourceTest {
         User user1 = createUser(1L, "Alice", "alice@example.com");
         User user2 = createUser(2L, "Bob", "bob@example.com");
         when(userService.findAll()).thenReturn(List.of(user1, user2));
-
-        List<UserDTO> result = userResource.getAllUsers();
-
         List<UserDTO> expectedUsers = List.of(UserMapper.toDTO(user1), UserMapper.toDTO(user2));
+
+        Response response = userResource.getAllUsers();
+
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        List<UserDTO> result = (List<UserDTO>) response.getEntity();
         assertEquals(expectedUsers, result);
         verify(userService).findAll();
     }

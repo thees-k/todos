@@ -22,11 +22,12 @@ public class UserResource {
     private UserService userService;
 
     @GET
-    public List<UserDTO> getAllUsers() {
+    public Response getAllUsers() {
         List<User> users = userService.findAll();
-        return users.stream()
+        List<UserDTO> dtos = users.stream()
                 .map(UserMapper::toDTO)
                 .collect(Collectors.toList());
+        return Response.ok(dtos).build();
     }
 
     @GET

@@ -22,11 +22,12 @@ public class TaskResource {
     private TaskService taskService;
 
     @GET
-    public List<TaskDTO> getAllTasks() {
+    public Response getAllTasks() {
         List<Task> tasks = taskService.findAll();
-        return tasks.stream()
+        List<TaskDTO> dtos = tasks.stream()
                 .map(TaskMapper::toDTO)
                 .collect(Collectors.toList());
+        return Response.ok(dtos).build();
     }
 
     @GET
