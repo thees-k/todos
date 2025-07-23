@@ -1,6 +1,7 @@
 package k.thees.dto;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class TaskDTO {
     public Long id;
@@ -21,5 +22,17 @@ public class TaskDTO {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.updatedById = updatedById;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        TaskDTO taskDTO = (TaskDTO) o;
+        return Objects.equals(id, taskDTO.id) && Objects.equals(title, taskDTO.title) && Objects.equals(description, taskDTO.description) && Objects.equals(done, taskDTO.done) && Objects.equals(createdAt, taskDTO.createdAt) && Objects.equals(updatedAt, taskDTO.updatedAt) && Objects.equals(updatedById, taskDTO.updatedById);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, done, createdAt, updatedAt, updatedById);
     }
 }
