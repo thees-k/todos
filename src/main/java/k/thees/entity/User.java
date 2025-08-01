@@ -64,6 +64,10 @@ public class User {
         return updatedAt;
     }
 
+    public void refreshUpdatedAt() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

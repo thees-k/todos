@@ -25,11 +25,13 @@ public class UserService {
     }
 
     public User create(User user) {
+        user.refreshUpdatedAt();
         entityManager.persist(user);
         return user;
     }
 
     public User update(User user) {
+        user.refreshUpdatedAt();
         return entityManager.merge(user);
     }
 
