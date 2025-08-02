@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 
-asadmin="$HOME/bin/payara6/bin/asadmin"
+payara_directory="$HOME/bin/payara6"
+
+# Check if payara_directory exists:
+if [[ ! -d "$payara_directory" ]]; then
+  echo "Error: Payara directory not found: $payara_directory"
+  exit 1
+fi
+
+asadmin="$payara_directory/bin/asadmin"
 war="target/todos.war"
 
 if ! [[ -x "$asadmin" ]]; then
@@ -27,3 +35,16 @@ done
 
 # Deploy specified WAR with force option
 "$asadmin" deploy --force "$war" || { echo "Failed to deploy application"; exit 1; }
+
+# Start log output
+log_file="$payara_directory/glassfish/domains/domain1/logs/server.log"
+if [ -f "$log_file" ]; then
+  echo
+  echo "=> Press CTRL+C to stop log output!"
+  echo "-----------------------------------"
+  echo
+  tail -f "$log_file"
+else
+  echo "Log file not found: $log_file"
+fi
+
