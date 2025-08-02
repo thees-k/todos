@@ -1,13 +1,7 @@
 #!/usr/bin/env bash
 
-asadmin="$1"
-war="$2"
-
-if [[ -z "$asadmin" || -z "$war" ]]; then
-  script_name=$(basename "$0")
-  echo "Usage: $script_name /path/to/asadmin /path/to/app.war"
-  exit 1
-fi
+asadmin="$HOME/bin/payara6/bin/asadmin"
+war="target/todos.war"
 
 if ! [[ -x "$asadmin" ]]; then
   echo "Error: asadmin executable not found or not executable: $asadmin"
