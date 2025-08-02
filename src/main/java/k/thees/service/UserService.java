@@ -6,6 +6,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import k.thees.entity.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,13 +26,13 @@ public class UserService {
     }
 
     public User create(User user) {
-        user.refreshUpdatedAt();
+        user.setUpdatedAt(LocalDateTime.now());
         entityManager.persist(user);
         return user;
     }
 
     public User update(User user) {
-        user.refreshUpdatedAt();
+        user.setUpdatedAt(LocalDateTime.now());
         return entityManager.merge(user);
     }
 

@@ -6,6 +6,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import k.thees.entity.Task;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,11 +26,15 @@ public class TaskService {
     }
 
     public Task create(Task task) {
+        LocalDateTime now = LocalDateTime.now();
+        task.setUpdatedAt(now);
+        task.setCreatedAt(now);
         entityManager.persist(task);
         return task;
     }
 
     public Task update(Task task) {
+        task.setUpdatedAt(LocalDateTime.now());
         return entityManager.merge(task);
     }
 

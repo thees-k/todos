@@ -67,6 +67,10 @@ class TaskServiceTest {
 
         verify(entityManager).persist(task);
         assertEquals(task, result);
+
+        assertNotNull(result.getCreatedAt());
+        assertNotNull(result.getUpdatedAt());
+        assertEquals(result.getCreatedAt(), result.getUpdatedAt());
     }
 
     @Test
@@ -78,6 +82,28 @@ class TaskServiceTest {
 
         verify(entityManager).merge(task);
         assertEquals(task, result);
+    }
+
+    @Test
+    void update_shouldSetUpdatedAtAndKeepCreatedAt() {
+        Task task = createTask(1L, "Task");
+        LocalDateTime originalCreatedAt = LocalDateTime.of(2023, 1, 1, 12, 0);
+        task.setCreatedAt(originalCreatedAt);
+        task.setUpdatedAt(originalCreatedAt);
+
+        LocalDateTime beforeUpdate = LocalDateTime.now();
+
+        when(entityManager.merge(task)).thenAnswer(invocation -> {
+            return invocation.getArgument(0);
+        });
+
+        Task updatedTask = taskService.update(task);
+
+        verify(entityManager).merge(task);
+        assertEquals(originalCreatedAt, updatedTask.getCreatedAt(), "createdAt should remain unchanged");
+        assertNotNull(updatedTask.getUpdatedAt());
+        assertTrue(updatedTask.getUpdatedAt().isAfter(beforeUpdate) || updatedTask.getUpdatedAt().isEqual(beforeUpdate),
+            "updatedAt should be updated to current time or later");
     }
 
     @Test

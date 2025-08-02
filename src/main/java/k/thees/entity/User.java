@@ -64,8 +64,8 @@ public class User {
         return updatedAt;
     }
 
-    public void refreshUpdatedAt() {
-        this.updatedAt = LocalDateTime.now();
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
