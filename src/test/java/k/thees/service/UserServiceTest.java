@@ -65,6 +65,31 @@ class UserServiceTest {
 
         verify(entityManager).persist(alice);
         assertEquals(alice, result);
+        assertNotNull(result.getUpdatedAt());
+    }
+
+    @Test
+    void create_shouldAssignIdAfterPersist() {
+        // Create a new User instance with ID 0 (meaning no ID assigned yet)
+        User alice = createUser(0, "Alice", "alice@example.com", "hash1");
+
+        // Mock the behavior of entityManager.persist to simulate JPA assigning an ID after persisting
+        doAnswer(invocation -> {
+            // Get the User object passed to persist
+            User user = invocation.getArgument(0);
+            // Simulate database assigning ID 1 to the user
+            user.setId(1L);
+            return null; // persist returns void
+        }).when(entityManager).persist(any(User.class));
+
+        // Call the create method, which calls persist internally
+        User result = userService.create(alice);
+
+        // Verify that persist was called with the user
+        verify(entityManager).persist(alice);
+
+        // Assert that after creation, the user has the assigned ID 1
+        assertEquals(1L, result.getId());
     }
 
     @Test
