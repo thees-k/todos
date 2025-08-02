@@ -82,6 +82,39 @@ class TodoListServiceTest {
     }
 
     @Test
+    void create_shouldSetCreatedAtAndUpdatedAt() {
+        TodoList todoList = createTodoList(null, "New List", "Description", false, false);
+
+        TodoList result = todoListService.create(todoList);
+
+        verify(entityManager).persist(todoList);
+        assertEquals(todoList, result);
+        assertNotNull(result.getCreatedAt(), "createdAt should be set");
+        assertNotNull(result.getUpdatedAt(), "updatedAt should be set");
+        assertEquals(result.getCreatedAt(), result.getUpdatedAt(), "createdAt and updatedAt should be equal on creation");
+    }
+
+    @Test
+    void update_shouldSetUpdatedAtAndKeepCreatedAt() {
+        TodoList todoList = createTodoList(1L, "List", "Description", false, false);
+        LocalDateTime originalCreatedAt = LocalDateTime.of(2023, 1, 1, 12, 0);
+        todoList.setCreatedAt(originalCreatedAt);
+        todoList.setUpdatedAt(originalCreatedAt);
+
+        LocalDateTime beforeUpdate = LocalDateTime.now();
+
+        when(entityManager.merge(todoList)).thenAnswer(invocation -> invocation.getArgument(0));
+
+        TodoList updated = todoListService.update(todoList);
+
+        verify(entityManager).merge(todoList);
+        assertEquals(originalCreatedAt, updated.getCreatedAt(), "createdAt should remain unchanged");
+        assertNotNull(updated.getUpdatedAt(), "updatedAt should be set");
+        assertTrue(updated.getUpdatedAt().isAfter(beforeUpdate) || updated.getUpdatedAt().isEqual(beforeUpdate),
+            "updatedAt should be updated to current time or later");
+    }
+
+    @Test
     void delete_existingId_shouldRemoveTodoListAndReturnTrue() {
         TodoList list = createTodoList(1L, "List 1", "Desc 1", false, false);
         when(entityManager.find(TodoList.class, list.getId())).thenReturn(list);
