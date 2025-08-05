@@ -3,6 +3,7 @@ package k.thees.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import k.thees.validation.ValidationConstraints;
 
 @Entity
 @Table(name = "users")
@@ -16,7 +17,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 100)
+    @Column(nullable = false, unique = true, length = ValidationConstraints.USERNAME_MAX_LENGTH)
     private String username;
 
     @Column(nullable = false, unique = true)

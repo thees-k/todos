@@ -1,6 +1,7 @@
 package k.thees.resource;
 
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -41,7 +42,7 @@ public class UserResource {
     }
 
     @POST
-    public Response createUser(UserDTO userDTO) {
+    public Response createUser(@Valid UserDTO userDTO) {
         User user = UserMapper.toEntity(userDTO);
         User created = userService.create(user);
         UserDTO createdDTO = UserMapper.toDTO(created);
