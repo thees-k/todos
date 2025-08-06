@@ -11,7 +11,8 @@ import java.util.Objects;
 public class RegistrationDTO {
 
     @NotBlank(message = "Password must not be blank")
-    @Size(min = 8, max = 72, message = "Password must be between {min} and {max} characters")
+    @Size(min = ValidationConstraints.PASSWORD_MIN_LENGTH, max = ValidationConstraints.PASSWORD_MAX_LENGTH,
+            message = "Password must be between {min} and {max} characters")
     @Pattern(
             regexp = "^[\\x21-\\x7E]+$",
             message = "Password must not contain whitespace or control characters"
