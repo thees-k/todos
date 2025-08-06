@@ -31,11 +31,6 @@ public class UserService {
         return user;
     }
 
-    public User update(User user) {
-        user.setUpdatedAt(LocalDateTime.now());
-        return entityManager.merge(user);
-    }
-
     public boolean delete(Long id) {
         User user = entityManager.find(User.class, id);
         if (user != null) {

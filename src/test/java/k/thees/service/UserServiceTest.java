@@ -93,17 +93,6 @@ class UserServiceTest {
     }
 
     @Test
-    void update_shouldMergeAndReturnUpdatedUser() {
-        User alice = createUser(1, "Alice", "alice@example.com", "hash1");
-        when(entityManager.merge(alice)).thenReturn(alice);
-
-        User result = userService.update(alice);
-
-        verify(entityManager).merge(alice);
-        assertEquals(alice, result);
-    }
-
-    @Test
     void delete_existingId_shouldRemoveUserAndReturnTrue() {
         User alice = createUser(1, "Alice", "alice@example.com", "hash1");
         when(entityManager.find(User.class, alice.getId())).thenReturn(alice);
