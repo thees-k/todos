@@ -2,6 +2,7 @@ package k.thees.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import k.thees.validation.ValidationConstraints;
 
@@ -9,8 +10,12 @@ import java.util.Objects;
 
 public class RegistrationDTO {
 
-    @NotBlank
-    @Size(min = 8, message = "Password must have at least {min} characters")
+    @NotBlank(message = "Password must not be blank")
+    @Size(min = 8, max = 72, message = "Password must be between {min} and {max} characters")
+    @Pattern(
+            regexp = "^[\\x21-\\x7E]+$",
+            message = "Password must not contain whitespace or control characters"
+    )
     public String password;
 
     @Size(min = ValidationConstraints.USERNAME_MIN_LENGTH, max = ValidationConstraints.USERNAME_MAX_LENGTH,
