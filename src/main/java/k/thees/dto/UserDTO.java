@@ -8,14 +8,8 @@ import java.util.Objects;
 
 public class UserDTO {
     public Long id;
-
-    @Size(min = ValidationConstraints.USERNAME_MIN_LENGTH, max = ValidationConstraints.USERNAME_MAX_LENGTH,
-            message = "Username must be between {min} and {max} characters")
     public String username;
-
-    @Email(message = "Email should be valid")
     public String email;
-
     public String passwordHash;
     public LocalDateTime updatedAt;
 

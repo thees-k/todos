@@ -18,11 +18,12 @@ public class RegistrationDTO {
     )
     public String password;
 
+    @NotBlank(message = "Username must not be blank")
     @Size(min = ValidationConstraints.USERNAME_MIN_LENGTH, max = ValidationConstraints.USERNAME_MAX_LENGTH,
             message = "Username must be between {min} and {max} characters")
     public String username;
 
-    @Email
+    @Email(message = "Email should be valid")
     public String email;
 
     @Override
