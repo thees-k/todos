@@ -41,24 +41,6 @@ public class UserResource {
                 .build();
     }
 
-    @POST
-    public Response createUser(@Valid UserDTO userDTO) {
-        User user = UserMapper.toEntity(userDTO);
-        User created = userService.create(user);
-        UserDTO createdDTO = UserMapper.toDTO(created);
-        return Response.created(URI.create("/api/users/" + createdDTO.id)).entity(createdDTO).build();
-    }
-
-    @PUT
-    @Path("/{id}")
-    public Response updateUser(@PathParam("id") Long id, UserDTO userDTO) {
-        userDTO.id = id; // set id from path param
-        User user = UserMapper.toEntity(userDTO);
-        User updated = userService.update(user);
-        UserDTO updatedDTO = UserMapper.toDTO(updated);
-        return Response.ok(updatedDTO).build();
-    }
-
     @DELETE
     @Path("/{id}")
     public Response deleteUser(@PathParam("id") Long id) {
