@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import k.thees.entity.TodoList;
 import k.thees.entity.User;
+import k.thees.security.SecurityService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+
+import static k.thees.testutil.TestDataFactory.createUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,6 +28,14 @@ class TodoListServiceTest {
 
     @Mock
     private EntityManager entityManager;
+
+    @Mock
+    private SecurityService securityService;
+
+    @BeforeEach
+    void setUp() {
+        lenient().when(securityService.getLoggedInUser()).thenReturn(Optional.of(createUser(1L, "Alice", "alice@example.com", "hash1")));
+    }
 
     @Test
     void findAll_shouldReturnListOfTodoLists() {

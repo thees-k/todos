@@ -10,6 +10,8 @@ import org.mockito.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import static k.thees.testutil.TestDataFactory.createUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -114,12 +116,30 @@ class UserServiceTest {
         assertFalse(result);
     }
 
-    private User createUser(long id, String userName, String email, String passwordHash) {
-        var user = new User();
-        user.setId(id);
-        user.setUsername(userName);
-        user.setEmail(email);
-        user.setPasswordHash(passwordHash);
-        return user;
+    @Test
+    void findByUsername_existingUsername_shouldReturnUser() {
+        User alice = createUser(1, "Alice", "alice@example.com", "hash1");
+
+        TypedQuery<User> query = mock(TypedQuery.class);
+        when(entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
+        when(query.setParameter("username", "Alice")).thenReturn(query);
+        when(query.getSingleResult()).thenReturn(alice);
+
+        Optional<User> result = userService.findByUsername("Alice");
+
+        assertTrue(result.isPresent());
+        assertEquals(alice, result.get());
+    }
+
+    @Test
+    void findByUsername_nonExistingUsername_shouldReturnEmptyOptional() {
+        TypedQuery<User> query = mock(TypedQuery.class);
+        when(entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
+        when(query.setParameter("username", "NonExistent")).thenReturn(query);
+        when(query.getSingleResult()).thenThrow(new jakarta.persistence.NoResultException());
+
+        Optional<User> result = userService.findByUsername("NonExistent");
+
+        assertFalse(result.isPresent());
     }
 }

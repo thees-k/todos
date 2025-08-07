@@ -1,5 +1,10 @@
 package k.thees.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import k.thees.validation.ValidationConstraints;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
@@ -7,10 +12,21 @@ import java.util.Set;
 public class TodoListDTO {
     public Long id;
     public Long ownerId;
+
+    @NotBlank(message = "Name must not be blank")
+    @Size(min = ValidationConstraints.TODO_LIST_NAME_MIN_LENGTH, max = ValidationConstraints.TODO_LIST_NAME_MAX_LENGTH,
+            message = "Name must be between {min} and {max} characters")
     public String name;
+
+    @NotNull
     public String description;
+
+    @NotNull
     public Boolean isPublic;
+
+    @NotNull
     public Boolean isDone;
+
     public LocalDateTime createdAt;
     public LocalDateTime updatedAt;
     public Long updatedById;

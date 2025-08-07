@@ -1,10 +1,12 @@
 package k.thees.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import k.thees.entity.Task;
+import k.thees.security.SecurityService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +18,9 @@ public class TaskService {
 
     @PersistenceContext(unitName = "myPersistenceUnit")
     private EntityManager entityManager;
+
+    @Inject
+    private SecurityService securityService;
 
     public List<Task> findAll() {
         return entityManager.createQuery("SELECT t FROM Task t ORDER BY t.id", Task.class).getResultList();
@@ -29,12 +34,14 @@ public class TaskService {
         LocalDateTime now = LocalDateTime.now();
         task.setUpdatedAt(now);
         task.setCreatedAt(now);
+        securityService.getLoggedInUser().ifPresent(task::setUpdatedBy);
         entityManager.persist(task);
         return task;
     }
 
     public Task update(Task task) {
         task.setUpdatedAt(LocalDateTime.now());
+        securityService.getLoggedInUser().ifPresent(task::setUpdatedBy);
         return entityManager.merge(task);
     }
 

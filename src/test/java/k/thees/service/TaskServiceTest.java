@@ -4,16 +4,22 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import k.thees.entity.Task;
 import k.thees.entity.User;
+import k.thees.security.SecurityService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+
+import static k.thees.testutil.TestDataFactory.createUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,6 +30,14 @@ class TaskServiceTest {
 
     @Mock
     private EntityManager entityManager;
+
+    @Mock
+    private SecurityService securityService;
+
+    @BeforeEach
+    void setUp() {
+        lenient().when(securityService.getLoggedInUser()).thenReturn(Optional.of(createUser(1L, "Alice", "alice@example.com", "hash1")));
+    }
 
     @Test
     void findAll_shouldReturnListOfTasks() {
@@ -103,7 +117,7 @@ class TaskServiceTest {
         assertEquals(originalCreatedAt, updatedTask.getCreatedAt(), "createdAt should remain unchanged");
         assertNotNull(updatedTask.getUpdatedAt());
         assertTrue(updatedTask.getUpdatedAt().isAfter(beforeUpdate) || updatedTask.getUpdatedAt().isEqual(beforeUpdate),
-            "updatedAt should be updated to current time or later");
+                "updatedAt should be updated to current time or later");
     }
 
     @Test

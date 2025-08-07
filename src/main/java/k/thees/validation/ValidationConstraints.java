@@ -11,4 +11,6 @@ public class ValidationConstraints {
     public static final int TASK_TITLE_MIN_LENGTH = 3;
     public static final int TASK_TITLE_MAX_LENGTH = 255;
 
+    public static final int TODO_LIST_NAME_MIN_LENGTH = 3;
+    public static final int TODO_LIST_NAME_MAX_LENGTH = 255;
 }

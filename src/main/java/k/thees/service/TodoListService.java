@@ -1,10 +1,12 @@
 package k.thees.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import k.thees.entity.TodoList;
+import k.thees.security.SecurityService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +18,9 @@ public class TodoListService {
 
     @PersistenceContext(unitName = "myPersistenceUnit")
     private EntityManager entityManager;
+
+    @Inject
+    private SecurityService securityService;
 
     public List<TodoList> findAll() {
         return entityManager.createQuery("SELECT t FROM TodoList t ORDER BY t.id", TodoList.class).getResultList();
@@ -29,12 +34,14 @@ public class TodoListService {
         LocalDateTime now = LocalDateTime.now();
         todoList.setCreatedAt(now);
         todoList.setUpdatedAt(now);
+        securityService.getLoggedInUser().ifPresent(todoList::setUpdatedBy);
         entityManager.persist(todoList);
         return todoList;
     }
 
     public TodoList update(TodoList todoList) {
         todoList.setUpdatedAt(LocalDateTime.now());
+        securityService.getLoggedInUser().ifPresent(todoList::setUpdatedBy);
         return entityManager.merge(todoList);
     }
 
