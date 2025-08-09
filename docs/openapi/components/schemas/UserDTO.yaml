@@ -1,0 +1,25 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    description: Unique identifier of the user
+    example: 1
+  username:
+    type: string
+    description: Username of the user
+    example: user1
+  email:
+    type: string
+    format: email
+    description: Email address of the user
+    example: user@example.com
+  passwordHash:
+    type: string
+    description: Hashed password of the user
+    example: $2a$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36Z8a7p1Kq6v5b6Z6a1q9eW
+  updatedAt:
+    type: string
+    format: date-time
+    description: Timestamp of last update
+    example: 2024-01-01T12:00:00Z

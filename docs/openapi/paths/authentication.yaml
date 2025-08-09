@@ -1,0 +1,28 @@
+/auth/login:
+  post:
+    summary: User login
+    description: Authenticates a user and returns a JWT token.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/AuthenticationDTO.yaml'
+    responses:
+      '200':
+        description: Successful authentication with JWT token
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: JWT token for authenticated user
+      '401':
+        description: Invalid credentials
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: Invalid credentials

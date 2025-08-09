@@ -1,0 +1,24 @@
+/register:
+  post:
+    summary: Register a new user
+    description: Creates a new user account with hashed password.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegistrationDTO'
+    responses:
+      '201':
+        description: User created successfully
+        headers:
+          Location:
+            description: URI of the created user resource
+            schema:
+              type: string
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+      '400':
+        description: Invalid input

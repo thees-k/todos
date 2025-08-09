@@ -1,0 +1,36 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    description: Unique identifier of the task
+    example: 1
+  title:
+    type: string
+    description: Title of the task
+    minLength: 3  # replace with ValidationConstraints.TASK_TITLE_MIN_LENGTH if known
+    maxLength: 255 # replace with ValidationConstraints.TASK_TITLE_MAX_LENGTH if known
+    example: Buy groceries
+  description:
+    type: string
+    description: Detailed description of the task
+    example: Buy milk, eggs, and bread
+  done:
+    type: boolean
+    description: Task completion status
+    example: false
+  createdAt:
+    type: string
+    format: date-time
+    description: Timestamp when the task was created
+    example: 2024-01-01T12:00:00Z
+  updatedAt:
+    type: string
+    format: date-time
+    description: Timestamp when the task was last updated
+    example: 2024-01-02T15:30:00Z
+  updatedById:
+    type: integer
+    format: int64
+    description: ID of the user who last updated the task
+    example: 1

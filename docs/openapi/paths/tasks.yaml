@@ -1,0 +1,95 @@
+/tasks:
+  get:
+    summary: Get all tasks
+    description: Returns a list of all tasks.
+    responses:
+      '200':
+        description: List of tasks
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/TaskDTO'
+  post:
+    summary: Create a new task
+    description: Creates a new task.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TaskDTO'
+    responses:
+      '201':
+        description: Task created successfully
+        headers:
+          Location:
+            description: URI of the created task
+            schema:
+              type: string
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskDTO'
+/tasks/{id}:
+  get:
+    summary: Get a task by ID
+    description: Returns a single task by its ID.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: ID of the task to retrieve
+    responses:
+      '200':
+        description: Task found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskDTO'
+      '404':
+        description: Task not found
+  put:
+    summary: Update a task
+    description: Updates an existing task by ID.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: ID of the task to update
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TaskDTO'
+    responses:
+      '200':
+        description: Task updated successfully
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskDTO'
+  delete:
+    summary: Delete a task
+    description: Deletes a task by ID.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: ID of the task to delete
+    responses:
+      '204':
+        description: Task deleted successfully
+      '404':
+        description: Task not found

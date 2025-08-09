@@ -1,0 +1,52 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    description: Unique identifier of the todo list
+    example: 1
+  ownerId:
+    type: integer
+    format: int64
+    description: ID of the owner user
+    example: 1
+  name:
+    type: string
+    description: Name of the todo list
+    minLength: 3  # replace with ValidationConstraints.TODO_LIST_NAME_MIN_LENGTH if known
+    maxLength: 255 # replace with ValidationConstraints.TODO_LIST_NAME_MAX_LENGTH if known
+    example: Shopping List
+  description:
+    type: string
+    description: Description of the todo list
+    example: List of items to buy
+  isPublic:
+    type: boolean
+    description: Whether the todo list is public
+    example: false
+  isDone:
+    type: boolean
+    description: Whether the todo list is marked as done
+    example: false
+  createdAt:
+    type: string
+    format: date-time
+    description: Timestamp when the todo list was created
+    example: 2024-01-01T12:00:00Z
+  updatedAt:
+    type: string
+    format: date-time
+    description: Timestamp when the todo list was last updated
+    example: 2024-01-02T15:30:00Z
+  updatedById:
+    type: integer
+    format: int64
+    description: ID of the user who last updated the todo list
+    example: 1
+  taskIds:
+    type: array
+    description: List of associated task IDs
+    items:
+      type: integer
+      format: int64
+    example: [1, 2, 3]

@@ -1,0 +1,23 @@
+type: object
+required:
+  - password
+  - username
+properties:
+  password:
+    type: string
+    description: Password must be between specified min and max length and contain no whitespace or control characters
+    minLength: 8  # replace with ValidationConstraints.PASSWORD_MIN_LENGTH if known
+    maxLength: 64 # replace with ValidationConstraints.PASSWORD_MAX_LENGTH if known
+    pattern: '^[\x21-\x7E]+$'
+    example: secret123
+  username:
+    type: string
+    description: Username must be between specified min and max length
+    minLength: 3   # replace with ValidationConstraints.USERNAME_MIN_LENGTH if known
+    maxLength: 20  # replace with ValidationConstraints.USERNAME_MAX_LENGTH if known
+    example: user1
+  email:
+    type: string
+    format: email
+    description: Email should be valid
+    example: user@example.com
