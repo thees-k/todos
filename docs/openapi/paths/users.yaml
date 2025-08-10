@@ -29,7 +29,7 @@
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserDTO'
+              $ref: '../components/schemas/UserDTO'
       '404':
         description: User not found
   delete:

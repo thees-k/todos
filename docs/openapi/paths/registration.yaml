@@ -7,7 +7,7 @@
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RegistrationDTO'
+            $ref: '../components/schemas/RegistrationDTO'
     responses:
       '201':
         description: User created successfully
