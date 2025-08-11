@@ -10,7 +10,7 @@
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/UserDTO'
+                $ref: '../components/schemas/UserDTO.yaml'
 /users/{id}:
   get:
     summary: Get a user by ID
@@ -29,7 +29,7 @@
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/UserDTO'
+              $ref: '../components/schemas/UserDTO.yaml'
       '404':
         description: User not found
   delete:

@@ -10,7 +10,7 @@
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/TodoListDTO'
+                $ref: '../components/schemas/ToDoListDTO.yaml'
   post:
     summary: Create a new todo list
     description: Creates a new todo list.
@@ -19,7 +19,7 @@
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/TodoListDTO'
+            $ref: '../components/schemas/ToDoListDTO.yaml'
     responses:
       '201':
         description: Todo list created successfully
@@ -31,7 +31,7 @@
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TodoListDTO'
+              $ref: '../components/schemas/ToDoListDTO.yaml'
 /todolists/{id}:
   get:
     summary: Get a todo list by ID
@@ -50,7 +50,7 @@
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TodoListDTO'
+              $ref: '../components/schemas/ToDoListDTO.yaml'
       '404':
         description: Todo list not found
   put:
@@ -69,14 +69,14 @@
       content:
         application/json:
           schema:
-            $ref: '../components/schemas/TodoListDTO'
+            $ref: '../components/schemas/ToDoListDTO.yaml'
     responses:
       '200':
         description: Todo list updated successfully
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TodoListDTO'
+              $ref: '../components/schemas/ToDoListDTO.yaml'
   delete:
     summary: Delete a todo list
     description: Deletes a todo list by ID.

@@ -3,7 +3,7 @@ info:
   title: Todo API
   version: 1.0.0
 servers:
-  - url: /api
+  - url: http://localhost:8080/todos/api
 paths:
   /auth/login:
     $ref: './paths/authentication.yaml#/~1auth~1login'
@@ -28,3 +28,4 @@ paths:
 
   /users/{id}:
     $ref: './paths/users.yaml#/~1users~1{id}'
+

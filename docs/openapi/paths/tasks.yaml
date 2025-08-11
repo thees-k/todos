@@ -10,7 +10,7 @@
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/TaskDTO'
+                $ref: '../components/schemas/TaskDTO.yaml'
   post:
     summary: Create a new task
     description: Creates a new task.
@@ -19,7 +19,7 @@
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/TaskDTO'
+            $ref: '../components/schemas/TaskDTO.yaml'
     responses:
       '201':
         description: Task created successfully
@@ -31,7 +31,7 @@
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TaskDTO'
+              $ref: '../components/schemas/TaskDTO.yaml'
 /tasks/{id}:
   get:
     summary: Get a task by ID
@@ -50,7 +50,7 @@
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TaskDTO'
+              $ref: '../components/schemas/TaskDTO.yaml'
       '404':
         description: Task not found
   put:
@@ -69,14 +69,14 @@
       content:
         application/json:
           schema:
-            $ref: '../components/schemas/TaskDTO'
+            $ref: '../components/schemas/TaskDTO.yaml'
     responses:
       '200':
         description: Task updated successfully
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TaskDTO'
+              $ref: '../components/schemas/TaskDTO.yaml'
   delete:
     summary: Delete a task
     description: Deletes a task by ID.
