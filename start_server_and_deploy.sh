@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+./mvnw clean package || { echo "Failed to clean and package Maven project"; exit 1; }
+
 payara_directory="$HOME/bin/payara6"
 
 # Check if payara_directory exists:
