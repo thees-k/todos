@@ -1,0 +1,23 @@
+/auth/login:
+  $ref: './paths/authentication.yaml#/auth/login'
+
+/register:
+  $ref: './paths/registration.yaml#/register'
+
+/tasks:
+  $ref: './paths/tasks.yaml#/tasks'
+
+/tasks/{id}:
+  $ref: './paths/tasks.yaml#/tasks/{id}'
+
+/todolists:
+  $ref: './paths/todo-lists.yaml#/todolists'
+
+/todolists/{id}:
+  $ref: './paths/todo-lists.yaml#/todolists/{id}'
+
+/users:
+  $ref: './paths/users.yaml#/users'
+
+/users/{id}:
+  $ref: './paths/users.yaml#/users/{id}'

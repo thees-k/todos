@@ -5,4 +5,4 @@ info:
 servers:
   - url: /api
 paths:
-  $ref: './paths/authentication.yaml'
+  $ref: './paths.yaml'
