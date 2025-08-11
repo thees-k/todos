@@ -12,7 +12,8 @@ import java.io.IOException;
 @Priority(Priorities.HEADER_DECORATOR)
 public class CorsFilter implements ContainerResponseFilter, ContainerRequestFilter {
 
-    private static final String UI_ORIGIN = "http://localhost:8081";
+    // private static final String UI_ORIGIN = "http://localhost:8081";
+    private static final String UI_ORIGIN = "*";
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
