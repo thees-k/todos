@@ -18,7 +18,7 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
         String path = requestContext.getUriInfo().getPath();
-        if (path.endsWith("/api/auth/login")) {
+        if (path.startsWith("auth/login")) {
             return; // skip auth for login endpoint
         }
 
