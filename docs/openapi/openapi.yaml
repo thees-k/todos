@@ -5,4 +5,26 @@ info:
 servers:
   - url: /api
 paths:
-  $ref: './paths.yaml'
+  /auth/login:
+    $ref: './paths/authentication.yaml#/~1auth~1login'
+
+  /register:
+    $ref: './paths/registration.yaml#/~1register'
+
+  /tasks:
+    $ref: './paths/tasks.yaml#/~1tasks'
+
+  /tasks/{id}:
+    $ref: './paths/tasks.yaml#/~1tasks~1{id}'
+
+  /todolists:
+    $ref: './paths/todo-lists.yaml#/~1todolists'
+
+  /todolists/{id}:
+    $ref: './paths/todo-lists.yaml#/~1todolists~1{id}'
+
+  /users:
+    $ref: './paths/users.yaml#/~1users'
+
+  /users/{id}:
+    $ref: './paths/users.yaml#/~1users~1{id}'
