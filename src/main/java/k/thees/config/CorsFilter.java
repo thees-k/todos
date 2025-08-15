@@ -9,8 +9,6 @@ import jakarta.ws.rs.container.ContainerResponseFilter;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
 
-import java.io.IOException;
-
 @Provider
 @Priority(Priorities.HEADER_DECORATOR)
 public class CorsFilter implements ContainerResponseFilter, ContainerRequestFilter {
