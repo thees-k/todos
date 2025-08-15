@@ -9,9 +9,7 @@ import k.thees.entity.User;
 import k.thees.mapper.UserMapper;
 import k.thees.service.UserService;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
