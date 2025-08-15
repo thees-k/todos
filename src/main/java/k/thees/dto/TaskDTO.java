@@ -26,19 +26,6 @@ public class TaskDTO {
     public LocalDateTime updatedAt;
     public Long updatedById;
 
-    public TaskDTO() {
-    }
-
-    public TaskDTO(Long id, String title, String description, Boolean done, LocalDateTime createdAt, LocalDateTime updatedAt, Long updatedById) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.done = done;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.updatedById = updatedById;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

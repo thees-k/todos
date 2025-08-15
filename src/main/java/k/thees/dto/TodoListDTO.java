@@ -32,23 +32,6 @@ public class TodoListDTO {
     public Long updatedById;
     public Set<Long> taskIds;
 
-    public TodoListDTO() {
-    }
-
-    public TodoListDTO(Long id, Long ownerId, String name, String description, Boolean isPublic, Boolean isDone,
-                       LocalDateTime createdAt, LocalDateTime updatedAt, Long updatedById, Set<Long> taskIds) {
-        this.id = id;
-        this.ownerId = ownerId;
-        this.name = name;
-        this.description = description;
-        this.isPublic = isPublic;
-        this.isDone = isDone;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.updatedById = updatedById;
-        this.taskIds = taskIds;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
