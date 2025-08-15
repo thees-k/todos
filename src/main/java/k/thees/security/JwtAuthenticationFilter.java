@@ -15,7 +15,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter implements ContainerRequestFilter {
 
     @Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
+    public void filter(ContainerRequestContext requestContext) {
 
         String path = requestContext.getUriInfo().getPath();
         if (path.startsWith("auth/login")) {

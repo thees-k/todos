@@ -19,7 +19,7 @@ public class CorsFilter implements ContainerResponseFilter, ContainerRequestFilt
     private static final String UI_ORIGIN = "*";
 
     @Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
+    public void filter(ContainerRequestContext requestContext) {
 
         if ("OPTIONS".equalsIgnoreCase(requestContext.getMethod())) {
 
