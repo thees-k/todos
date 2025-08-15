@@ -25,8 +25,8 @@ public class TodoListResource {
     public Response getAllTodoLists() {
         List<TodoList> todoLists = todoListService.findAll();
         List<TodoListDTO> dtos = todoLists.stream()
-                .map(TodoListMapper::toDTO)
-                .collect(Collectors.toList());
+                                          .map(TodoListMapper::toDTO)
+                                          .collect(Collectors.toList());
         return Response.ok(dtos).build();
     }
 
@@ -34,10 +34,10 @@ public class TodoListResource {
     @Path("/{id}")
     public Response getTodoList(@PathParam("id") Long id) {
         return todoListService.findById(id)
-                .map(TodoListMapper::toDTO)
-                .map(Response::ok)
-                .orElse(Response.status(Response.Status.NOT_FOUND))
-                .build();
+                              .map(TodoListMapper::toDTO)
+                              .map(Response::ok)
+                              .orElse(Response.status(Response.Status.NOT_FOUND))
+                              .build();
     }
 
     @POST

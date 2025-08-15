@@ -25,8 +25,8 @@ public class TodoListMapper {
         Set<Task> tasks = todoList.getTasks();
         if (tasks != null) {
             dto.taskIds = tasks.stream()
-                    .map(Task::getId)
-                    .collect(Collectors.toSet());
+                               .map(Task::getId)
+                               .collect(Collectors.toSet());
         }
         return dto;
     }

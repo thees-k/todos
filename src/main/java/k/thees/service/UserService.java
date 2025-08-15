@@ -44,8 +44,8 @@ public class UserService {
     public Optional<User> findByUsername(@NotBlank(message = "Username must not be blank") String username) {
         try {
             User user = entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
-                    .setParameter("username", username)
-                    .getSingleResult();
+                                     .setParameter("username", username)
+                                     .getSingleResult();
             return Optional.of(user);
         } catch (jakarta.persistence.NoResultException e) {
             return Optional.empty();

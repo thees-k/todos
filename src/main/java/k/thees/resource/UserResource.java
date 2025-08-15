@@ -9,6 +9,7 @@ import k.thees.entity.User;
 import k.thees.mapper.UserMapper;
 import k.thees.service.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,20 +24,20 @@ public class UserResource {
     @GET
     public Response getAllUsers() {
         List<User> users = userService.findAll();
-        List<UserDTO> dtos = users.stream()
-                .map(UserMapper::toDTO)
-                .collect(Collectors.toList());
-        return Response.ok(dtos).build();
+        List<UserDTO> dtoList = users.stream()
+                                     .map(UserMapper::toDTO)
+                                     .toList();
+        return Response.ok(dtoList).build();
     }
 
     @GET
     @Path("/{id}")
     public Response getUser(@PathParam("id") Long id) {
         return userService.findById(id)
-                .map(UserMapper::toDTO)
-                .map(Response::ok)
-                .orElse(Response.status(Response.Status.NOT_FOUND))
-                .build();
+                          .map(UserMapper::toDTO)
+                          .map(Response::ok)
+                          .orElse(Response.status(Response.Status.NOT_FOUND))
+                          .build();
     }
 
     @DELETE

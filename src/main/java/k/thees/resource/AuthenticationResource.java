@@ -33,8 +33,8 @@ public class AuthenticationResource {
                 .map(TokenDTO::new)
                 .map(tokenDTO -> Response.ok(tokenDTO).build())
                 .orElseGet(() -> Response.status(Response.Status.UNAUTHORIZED)
-                        .entity("Invalid credentials")
-                        .build());
+                                         .entity("Invalid credentials")
+                                         .build());
     }
 
     public record TokenDTO(String token) {

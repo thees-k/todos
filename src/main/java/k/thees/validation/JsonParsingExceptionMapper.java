@@ -18,12 +18,12 @@ public class JsonParsingExceptionMapper implements ExceptionMapper<Exception> {
 
         if (cause instanceof JsonParsingException || cause instanceof JsonbException || cause instanceof BadRequestException) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("Malformed JSON request")
-                    .build();
+                           .entity("Malformed JSON request")
+                           .build();
         } else {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Internal server error")
-                    .build();
+                           .entity("Internal server error")
+                           .build();
         }
     }
 }

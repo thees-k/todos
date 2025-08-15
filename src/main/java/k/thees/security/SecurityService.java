@@ -21,9 +21,9 @@ public class SecurityService {
 
     public Optional<User> getLoggedInUser() {
         return Optional.ofNullable(securityContext.getUserPrincipal())
-                .map(Principal::getName)
-                .map(userService::findByUsername)
-                .filter(Optional::isPresent)
-                .orElseThrow(UserNotAuthenticatedException::new);
+                       .map(Principal::getName)
+                       .map(userService::findByUsername)
+                       .filter(Optional::isPresent)
+                       .orElseThrow(UserNotAuthenticatedException::new);
     }
 }

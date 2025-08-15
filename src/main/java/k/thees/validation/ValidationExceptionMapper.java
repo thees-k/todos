@@ -13,11 +13,11 @@ public class ValidationExceptionMapper implements ExceptionMapper<ConstraintViol
     @Override
     public Response toResponse(ConstraintViolationException e) {
         List<String> errors = e.getConstraintViolations()
-                .stream()
-                .map(ConstraintViolation::getMessage)
-                .toList();
+                               .stream()
+                               .map(ConstraintViolation::getMessage)
+                               .toList();
         return Response.status(Response.Status.BAD_REQUEST)
-                .entity(errors)
-                .build();
+                       .entity(errors)
+                       .build();
     }
 }

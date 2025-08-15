@@ -24,12 +24,12 @@ public class CorsFilter implements ContainerResponseFilter, ContainerRequestFilt
         if ("OPTIONS".equalsIgnoreCase(requestContext.getMethod())) {
 
             Response response = Response.ok()
-                    .header("Access-Control-Allow-Origin", UI_ORIGIN)
-                    .header("Access-Control-Allow-Credentials", "true")
-                    .header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
-                    .header("Access-Control-Allow-Headers", "Authorization,Content-Type,Accept")
-                    .header("Access-Control-Max-Age", "86400")
-                    .build();
+                                        .header("Access-Control-Allow-Origin", UI_ORIGIN)
+                                        .header("Access-Control-Allow-Credentials", "true")
+                                        .header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
+                                        .header("Access-Control-Allow-Headers", "Authorization,Content-Type,Accept")
+                                        .header("Access-Control-Max-Age", "86400")
+                                        .build();
             requestContext.abortWith(response);
         }
     }

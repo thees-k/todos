@@ -25,8 +25,8 @@ public class TaskResource {
     public Response getAllTasks() {
         List<Task> tasks = taskService.findAll();
         List<TaskDTO> dtos = tasks.stream()
-                .map(TaskMapper::toDTO)
-                .collect(Collectors.toList());
+                                  .map(TaskMapper::toDTO)
+                                  .collect(Collectors.toList());
         return Response.ok(dtos).build();
     }
 
@@ -34,10 +34,10 @@ public class TaskResource {
     @Path("/{id}")
     public Response getTask(@PathParam("id") Long id) {
         return taskService.findById(id)
-                .map(TaskMapper::toDTO)
-                .map(Response::ok)
-                .orElse(Response.status(Response.Status.NOT_FOUND))
-                .build();
+                          .map(TaskMapper::toDTO)
+                          .map(Response::ok)
+                          .orElse(Response.status(Response.Status.NOT_FOUND))
+                          .build();
     }
 
     @POST

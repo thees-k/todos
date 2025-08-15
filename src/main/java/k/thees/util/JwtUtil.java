@@ -15,20 +15,20 @@ public class JwtUtil {
 
     public static String generateToken(String username) {
         return Jwts.builder()
-                .setSubject(username)
-                .setIssuer("todos-webapp")
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MS))
-                .signWith(KEY)
-                .compact();
+                   .setSubject(username)
+                   .setIssuer("todos-webapp")
+                   .setIssuedAt(new Date())
+                   .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MS))
+                   .signWith(KEY)
+                   .compact();
     }
 
     public static String parseToken(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(KEY)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                   .setSigningKey(KEY)
+                   .build()
+                   .parseClaimsJws(token)
+                   .getBody()
+                   .getSubject();
     }
 }
