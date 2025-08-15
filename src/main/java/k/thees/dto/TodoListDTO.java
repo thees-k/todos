@@ -32,7 +32,8 @@ public class TodoListDTO {
     public Long updatedById;
     public Set<Long> taskIds;
 
-    public TodoListDTO() {}
+    public TodoListDTO() {
+    }
 
     public TodoListDTO(Long id, Long ownerId, String name, String description, Boolean isPublic, Boolean isDone,
                        LocalDateTime createdAt, LocalDateTime updatedAt, Long updatedById, Set<Long> taskIds) {

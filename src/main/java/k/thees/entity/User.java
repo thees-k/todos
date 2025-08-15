@@ -1,9 +1,10 @@
 package k.thees.entity;
 
 import jakarta.persistence.*;
+import k.thees.validation.ValidationConstraints;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
-import k.thees.validation.ValidationConstraints;
 
 @Entity
 @Table(name = "users")

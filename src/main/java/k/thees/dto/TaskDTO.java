@@ -26,7 +26,8 @@ public class TaskDTO {
     public LocalDateTime updatedAt;
     public Long updatedById;
 
-    public TaskDTO() {}
+    public TaskDTO() {
+    }
 
     public TaskDTO(Long id, String title, String description, Boolean done, LocalDateTime createdAt, LocalDateTime updatedAt, Long updatedById) {
         this.id = id;

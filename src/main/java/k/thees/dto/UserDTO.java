@@ -1,8 +1,5 @@
 package k.thees.dto;
 
-import jakarta.validation.constraints.*;
-import k.thees.validation.ValidationConstraints;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -13,7 +10,8 @@ public class UserDTO {
     public String passwordHash;
     public LocalDateTime updatedAt;
 
-    public UserDTO() {}
+    public UserDTO() {
+    }
 
     public UserDTO(Long id, String username, String email, String passwordHash, LocalDateTime updatedAt) {
         this.id = id;
