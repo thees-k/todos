@@ -34,14 +34,14 @@ public class TodoListService {
         LocalDateTime now = LocalDateTime.now();
         todoList.setCreatedAt(now);
         todoList.setUpdatedAt(now);
-        securityService.getLoggedInUser().ifPresent(todoList::setUpdatedBy);
+        todoList.setUpdatedBy(securityService.getLoggedInUserOrThrow());
         entityManager.persist(todoList);
         return todoList;
     }
 
     public TodoList update(TodoList todoList) {
         todoList.setUpdatedAt(LocalDateTime.now());
-        securityService.getLoggedInUser().ifPresent(todoList::setUpdatedBy);
+        todoList.setUpdatedBy(securityService.getLoggedInUserOrThrow());
         return entityManager.merge(todoList);
     }
 

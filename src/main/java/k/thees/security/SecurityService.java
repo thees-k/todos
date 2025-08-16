@@ -19,11 +19,12 @@ public class SecurityService {
     @Inject
     private UserService userService;
 
-    public Optional<User> getLoggedInUser() {
+    public User getLoggedInUserOrThrow() {
         return Optional.ofNullable(securityContext.getUserPrincipal())
                        .map(Principal::getName)
                        .map(userService::findByUsername)
                        .filter(Optional::isPresent)
+                       .map(Optional::get)
                        .orElseThrow(UserNotAuthenticatedException::new);
     }
 }

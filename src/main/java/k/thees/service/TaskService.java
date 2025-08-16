@@ -34,14 +34,14 @@ public class TaskService {
         LocalDateTime now = LocalDateTime.now();
         task.setUpdatedAt(now);
         task.setCreatedAt(now);
-        securityService.getLoggedInUser().ifPresent(task::setUpdatedBy);
+        task.setUpdatedBy(securityService.getLoggedInUserOrThrow());
         entityManager.persist(task);
         return task;
     }
 
     public Task update(Task task) {
         task.setUpdatedAt(LocalDateTime.now());
-        securityService.getLoggedInUser().ifPresent(task::setUpdatedBy);
+        task.setUpdatedBy(securityService.getLoggedInUserOrThrow());
         return entityManager.merge(task);
     }
 

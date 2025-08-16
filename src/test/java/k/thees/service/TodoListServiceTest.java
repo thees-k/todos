@@ -36,7 +36,7 @@ class TodoListServiceTest {
 
     @BeforeEach
     void setUp() {
-        lenient().when(securityService.getLoggedInUser()).thenReturn(Optional.of(createUser(1L, "Alice", "alice@example.com", "hash1")));
+        lenient().when(securityService.getLoggedInUserOrThrow()).thenReturn(createUser(1L, "Alice", "alice@example.com", "hash1"));
     }
 
     @Test
