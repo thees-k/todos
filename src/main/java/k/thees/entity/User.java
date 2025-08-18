@@ -24,6 +24,10 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @ManyToOne // many users can have the same (one) role
+    @JoinColumn(name = "role", nullable = false)
+    private Role role;
+
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
@@ -59,6 +63,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getPasswordHash() {

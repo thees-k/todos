@@ -3,12 +3,14 @@ DELETE FROM tasks;
 DELETE FROM todo_lists;
 DELETE FROM users;
 
+INSERT INTO roles (id, name) VALUES (1, 'Administrator'), (2, 'Regular User');
+
 -- NOTE:
 -- password for user 'admin' is 'admin'
 -- password for user 'alice' is 'alice'
 -- password for user 'bob' is 'bob'
 -- password for user 'carol' is 'carol'
-INSERT INTO users (id, username, email, password_hash, created_at, updated_by, updated_at) VALUES (1, 'admin', 'admin@example.com', '$2a$10$zydPzLrV0pN7UV90nzOIje/xWsvbSjHDD6xFPbig9SDVD6FKEj3gO', CURRENT_TIMESTAMP, null, CURRENT_TIMESTAMP), (2, 'alice', 'alice@example.com', '$2a$10$lbhNMm/AJ2bDztbctzNtWu.FN6GV9Ejjl28Ab.7ylw9wJqsB/50lC', CURRENT_TIMESTAMP, null, CURRENT_TIMESTAMP), (3, 'bob', 'bob@example.com', '$2a$10$hq/YohNSNou/20lUNI1VAO7qr.nzldvMOzG15GIYZjQy8D0B.u.qC', CURRENT_TIMESTAMP, null, CURRENT_TIMESTAMP), (4, 'carol', 'carol@example.com', '$2a$10$IazaHCbTQOg3SjUnTD0DueBxXO4H7801c96I0BKTmcK2iwngTPP6y', CURRENT_TIMESTAMP, null, CURRENT_TIMESTAMP);
+INSERT INTO users (id, username, email, role, password_hash, created_at, updated_by, updated_at) VALUES (1, 'admin', 'admin@example.com', 1, '$2a$10$zydPzLrV0pN7UV90nzOIje/xWsvbSjHDD6xFPbig9SDVD6FKEj3gO', CURRENT_TIMESTAMP, null, CURRENT_TIMESTAMP), (2, 'alice', 'alice@example.com', 2, '$2a$10$lbhNMm/AJ2bDztbctzNtWu.FN6GV9Ejjl28Ab.7ylw9wJqsB/50lC', CURRENT_TIMESTAMP, null, CURRENT_TIMESTAMP), (3, 'bob', 'bob@example.com', 2, '$2a$10$hq/YohNSNou/20lUNI1VAO7qr.nzldvMOzG15GIYZjQy8D0B.u.qC', CURRENT_TIMESTAMP, null, CURRENT_TIMESTAMP), (4, 'carol', 'carol@example.com', 2, '$2a$10$IazaHCbTQOg3SjUnTD0DueBxXO4H7801c96I0BKTmcK2iwngTPP6y', CURRENT_TIMESTAMP, null, CURRENT_TIMESTAMP);
 
 UPDATE users SET updated_by = id;
 
