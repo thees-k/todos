@@ -2,6 +2,8 @@ package k.thees.service;
 
 import jakarta.persistence.EntityManager;
 import k.thees.entity.User;
+import k.thees.security.SecurityService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,8 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 
 import static k.thees.testutil.TestDataFactory.createUser;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.lenient;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -24,8 +26,16 @@ class UserServiceTest {
     @Mock
     private EntityManager entityManager;
 
+    @Mock
+    private SecurityService securityService;
+
+    @BeforeEach
+    void setUp() {
+        lenient().when(securityService.getLoggedInUserOrThrow()).thenReturn(createUser(1L, "Admin", "admin@example.com", "hash1"));
+    }
+
     @Test
-    void create_shouldUpdateUpdatedAtToCurrentOrLater() {
+    void create_shouldUpdateCreatedAtAndUpdatedAtToCurrentOrLater() {
         User alice = createUser(1, "Alice", "alice@example.com", "hash1");
 
         LocalDateTime beforeCreate = LocalDateTime.now();
@@ -35,5 +45,28 @@ class UserServiceTest {
         assertNotNull(createdUser.getUpdatedAt());
         assertFalse(createdUser.getUpdatedAt().isBefore(beforeCreate));
         assertFalse(createdUser.getUpdatedAt().isAfter(afterCreate));
+
+        assertNotNull(createdUser.getCreatedAt());
+        assertFalse(createdUser.getCreatedAt().isBefore(beforeCreate));
+        assertFalse(createdUser.getCreatedAt().isAfter(afterCreate));
+    }
+
+    @Test
+    void create_shouldSetEqualCreatedAtAndUpdatedAt() {
+        User alice = createUser(1, "Alice", "alice@example.com", "hash1");
+
+        User createdUser = userService.create(alice);
+
+        assertEquals(createdUser.getCreatedAt(), createdUser.getUpdatedAt());
+    }
+
+
+    @Test
+    void create_shouldUpdatedByToLoggedInUser() {
+        User alice = createUser(1, "Alice", "alice@example.com", "hash1");
+
+        User createdUser = userService.create(alice);
+
+        assertEquals("Admin", createdUser.getUpdatedBy().getUsername());
     }
 }

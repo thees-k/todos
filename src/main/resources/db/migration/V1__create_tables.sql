@@ -14,12 +14,16 @@ CREATE SEQUENCE users_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE todo_lists_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE tasks_seq START WITH 1 INCREMENT BY 1;
 
+
 CREATE TABLE users (
   id BIGINT DEFAULT NEXT VALUE FOR users_seq PRIMARY KEY,
   username VARCHAR(100) NOT NULL UNIQUE,
   email VARCHAR NOT NULL UNIQUE,
   password_hash VARCHAR NOT NULL,
-  updated_at TIMESTAMP
+  created_at TIMESTAMP NOT NULL,
+  updated_by BIGINT,
+  updated_at TIMESTAMP NOT NULL,
+  CONSTRAINT fk_users_updatedby FOREIGN KEY (updated_by) REFERENCES users(id)
 );
 
 CREATE TABLE todo_lists (
