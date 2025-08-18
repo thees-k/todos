@@ -29,10 +29,12 @@ asadmin create-jdbc-connection-pool \
 Edit the related `domain.xml` file to add an empty password property for the `myH2Pool` connection pool:
 
 ```xml
-<jdbc-connection-pool datasource-classname="org.h2.jdbcx.JdbcDataSource" name="myH2Pool" res-type="javax.sql.DataSource">
-  <property name="user" value="sa"></property>
-  <property name="password" value=""></property>
-  <property name="URL" value="jdbc:h2:file:~/database/todos;DB_CLOSE_DELAY=-1"></property>
+
+<jdbc-connection-pool datasource-classname="org.h2.jdbcx.JdbcDataSource" name="myH2Pool"
+                      res-type="javax.sql.DataSource">
+    <property name="user" value="sa"></property>
+    <property name="password" value=""></property>
+    <property name="URL" value="jdbc:h2:file:~/database/todos;DB_CLOSE_DELAY=-1"></property>
 </jdbc-connection-pool>
 ```
 
@@ -44,7 +46,7 @@ asadmin create-jdbc-resource \
  jdbc/myJtaDataSource
 ```
 
-### Build and Run
+### Setup Database
 
 1. Open a terminal and navigate to the project's root directory.
 
@@ -54,13 +56,25 @@ asadmin create-jdbc-resource \
 chmod +x mvnw
 ```
 
-3. Build and start the Payara server with the application:
+3. Build the project:
 
 ```bash
-./mvnw clean package payara-server:dev
+./mvnw clean package
 ```
 
-Alternatively, you can use the provided `start_server_and_deploy.sh` script (adjust Payara path if needed) to start the server and deploy the application.
+4. Execute SQL script(s) to create the database:
+
+```bash
+./mvnw flyway:migrate
+```
+
+This will create the todos database (file `todos.mv.db`) in your directory `~/database`. If the directory does not
+exist, it will be created automatically.
+
+### Start the application
+
+Use the provided `start_server_and_deploy.sh` script (adjust Payara path if needed) to build the project, start the
+server and deploy the application.
 
 ### Access the Application
 
@@ -80,13 +94,15 @@ The application uses JWT-based authentication.
 
 The database is pre-populated with users and todo lists. Passwords are bcrypt hashed:
 
+- User `admin` with password `admin`
 - User `alice` with password `alice`
 - User `bob` with password `bob`
 - User `carol` with password `carol`
-- User `admin` with password `admin`
 
 ## About
 
-This project demonstrates a Jakarta EE 10 application running on Payara 6, using H2 database and Flyway for migrations. It provides RESTful endpoints for managing users, todo lists, and tasks.
+This project demonstrates a Jakarta EE 10 application running on Payara 6, using H2 database and Flyway for migrations.
+It provides RESTful endpoints for managing users, todo lists, and tasks.
 
-For more information, visit the [Payara website](https://www.payara.fish/) and the [Payara documentation](https://docs.payara.fish/).
+For more information, visit the [Payara website](https://www.payara.fish/) and
+the [Payara documentation](https://docs.payara.fish/).
