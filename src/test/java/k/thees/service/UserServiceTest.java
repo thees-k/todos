@@ -1,6 +1,7 @@
 package k.thees.service;
 
 import jakarta.persistence.EntityManager;
+import k.thees.entity.Role;
 import k.thees.entity.User;
 import k.thees.security.SecurityService;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,12 +32,12 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        lenient().when(securityService.getLoggedInUserOrThrow()).thenReturn(createUser(1L, "Admin", "admin@example.com", "hash1"));
+        lenient().when(securityService.getLoggedInAdminUserOrThrow()).thenReturn(createUser(1L, "Admin", "admin@example.com", "hash1", Role.RoleType.ADMIN));
     }
 
     @Test
     void create_shouldUpdateCreatedAtAndUpdatedAtToCurrentOrLater() {
-        User alice = createUser(1, "Alice", "alice@example.com", "hash1");
+        User alice = createUser(1, "Alice", "alice@example.com", "hash1", Role.RoleType.REGULAR_USER);
 
         LocalDateTime beforeCreate = LocalDateTime.now();
         User createdUser = userService.create(alice);
@@ -53,7 +54,7 @@ class UserServiceTest {
 
     @Test
     void create_shouldSetEqualCreatedAtAndUpdatedAt() {
-        User alice = createUser(1, "Alice", "alice@example.com", "hash1");
+        User alice = createUser(1, "Alice", "alice@example.com", "hash1", Role.RoleType.REGULAR_USER);
 
         User createdUser = userService.create(alice);
 
@@ -63,7 +64,7 @@ class UserServiceTest {
 
     @Test
     void create_shouldUpdatedByToLoggedInUser() {
-        User alice = createUser(1, "Alice", "alice@example.com", "hash1");
+        User alice = createUser(2, "Alice", "alice@example.com", "hash1", Role.RoleType.REGULAR_USER);
 
         User createdUser = userService.create(alice);
 

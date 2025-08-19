@@ -1,6 +1,7 @@
 package k.thees.mapper;
 
 import k.thees.dto.UserDTO;
+import k.thees.entity.Role;
 import k.thees.entity.User;
 
 public class UserMapper {
@@ -11,7 +12,10 @@ public class UserMapper {
         dto.id = user.getId();
         dto.username = user.getUsername();
         dto.email = user.getEmail();
+        dto.roleId = user.getRole().getId();
         dto.passwordHash = user.getPasswordHash();
+        dto.createdAt = user.getCreatedAt();
+        dto.updatedById = user.getUpdatedBy() == null ? null : user.getUpdatedBy().getId();
         dto.updatedAt = user.getUpdatedAt();
         return dto;
     }
@@ -22,8 +26,19 @@ public class UserMapper {
         user.setId(dto.id);
         user.setUsername(dto.username);
         user.setEmail(dto.email);
+
+        Role role = new Role();
+        role.setId(dto.roleId);
+        user.setRole(role);
+
         user.setPasswordHash(dto.passwordHash);
-        // updatedAt usually managed by DB or service, set if needed
+        user.setCreatedAt(dto.createdAt);
+        if (dto.updatedById != null) {
+            User updatedBy = new User();
+            updatedBy.setId(dto.updatedById);
+            user.setUpdatedBy(updatedBy);
+        }
+        user.setUpdatedAt(dto.updatedAt);
         return user;
     }
 }

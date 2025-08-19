@@ -44,7 +44,8 @@ public class TodoListMapper {
         todoList.setDescription(dto.description);
         todoList.setPublic(dto.isPublic);
         todoList.setDone(dto.isDone);
-        // createdAt and updatedAt usually managed by DB or service, set if needed
+        todoList.setCreatedAt(dto.createdAt);
+        todoList.setUpdatedAt(dto.updatedAt);
         if (dto.updatedById != null) {
             User updatedBy = new User();
             updatedBy.setId(dto.updatedById);

@@ -1,6 +1,7 @@
 package k.thees.service;
 
 import jakarta.persistence.EntityManager;
+import k.thees.entity.Role;
 import k.thees.entity.TodoList;
 import k.thees.entity.User;
 import k.thees.security.SecurityService;
@@ -32,7 +33,7 @@ class TodoListServiceTest {
 
     @BeforeEach
     void setUp() {
-        lenient().when(securityService.getLoggedInUserOrThrow()).thenReturn(createUser(1L, "Alice", "alice@example.com", "hash1"));
+        lenient().when(securityService.getLoggedInUserOrThrow()).thenReturn(createUser(1L, "Alice", "alice@example.com", "hash1", Role.RoleType.REGULAR_USER));
     }
 
     @Test

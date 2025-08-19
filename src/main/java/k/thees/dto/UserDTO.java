@@ -7,6 +7,7 @@ public class UserDTO {
     public Long id;
     public String username;
     public String email;
+    public Integer roleId;
     public String passwordHash;
     public LocalDateTime createdAt;
     public Long updatedById;

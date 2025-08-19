@@ -27,15 +27,17 @@ public class RegistrationDTO {
     @Email(message = "Email should be valid")
     public String email;
 
+    public boolean isAdmin;
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         RegistrationDTO that = (RegistrationDTO) o;
-        return Objects.equals(password, that.password) && Objects.equals(username, that.username) && Objects.equals(email, that.email);
+        return isAdmin == that.isAdmin && Objects.equals(password, that.password) && Objects.equals(username, that.username) && Objects.equals(email, that.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(password, username, email);
+        return Objects.hash(password, username, email, isAdmin);
     }
 }

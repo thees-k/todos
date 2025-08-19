@@ -3,6 +3,7 @@ package k.thees.resource;
 import jakarta.ws.rs.core.Response;
 import k.thees.dto.RegistrationDTO;
 import k.thees.dto.UserDTO;
+import k.thees.entity.Role;
 import k.thees.entity.User;
 import k.thees.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,7 @@ class RegistrationResourceTest {
         RegistrationDTO registrationDTO = new RegistrationDTO();
         registrationDTO.username = "newuser";
         registrationDTO.email = "newuser@example.com";
+        registrationDTO.isAdmin = false;
         registrationDTO.password = "password123";
 
         // Prepare the User entity that userService.create() will return
@@ -41,6 +43,7 @@ class RegistrationResourceTest {
         createdUser.setId(1L);
         createdUser.setUsername(registrationDTO.username);
         createdUser.setEmail(registrationDTO.email);
+        createdUser.setRole(new Role(Role.RoleType.REGULAR_USER));
         createdUser.setPasswordHash("hashedPassword");
 
         when(userService.create(any(User.class))).thenReturn(createdUser);

@@ -30,7 +30,7 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
         String token = authHeader.substring("Bearer ".length());
 
         try {
-            String username = JwtUtil.parseToken(token); // this method needs to be added
+            String username = JwtUtil.parseToken(token);
             requestContext.setSecurityContext(new JwtSecurityContext(username));
         } catch (Exception e) {
             abort(requestContext);

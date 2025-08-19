@@ -2,6 +2,7 @@ package k.thees.resource;
 
 import jakarta.ws.rs.core.Response;
 import k.thees.dto.UserDTO;
+import k.thees.entity.Role;
 import k.thees.entity.User;
 import k.thees.mapper.UserMapper;
 import k.thees.service.UserService;
@@ -29,8 +30,8 @@ class UserResourceTest {
 
     @Test
     void getAllUsers_returnsUserDTOList() {
-        User user1 = createUser(1L, "Alice", "alice@example.com");
-        User user2 = createUser(2L, "Bob", "bob@example.com");
+        User user1 = createUser(1L, "Alice", "alice@example.com", Role.RoleType.REGULAR_USER);
+        User user2 = createUser(2L, "Bob", "bob@example.com", Role.RoleType.REGULAR_USER);
         when(userService.findAll()).thenReturn(List.of(user1, user2));
         List<UserDTO> expectedUsers = List.of(UserMapper.toDTO(user1), UserMapper.toDTO(user2));
 
@@ -44,7 +45,7 @@ class UserResourceTest {
 
     @Test
     void getUser_existingId_returnsOkResponseWithUserDTO() {
-        User user = createUser(1L, "Alice", "alice@example.com");
+        User user = createUser(1L, "Alice", "alice@example.com", Role.RoleType.REGULAR_USER);
         UserDTO expectedDTO = UserMapper.toDTO(user);
         when(userService.findById(1L)).thenReturn(Optional.of(user));
 
@@ -90,11 +91,12 @@ class UserResourceTest {
         verify(userService).delete(99L);
     }
 
-    private User createUser(Long id, String username, String email) {
+    private User createUser(Long id, String username, String email, Role.RoleType roleType) {
         User user = new User();
         user.setId(id);
         user.setUsername(username);
         user.setEmail(email);
+        user.setRole(new Role(roleType));
         return user;
     }
 }

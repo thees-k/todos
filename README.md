@@ -56,13 +56,7 @@ asadmin create-jdbc-resource \
 chmod +x mvnw
 ```
 
-3. Build the project:
-
-```bash
-./mvnw clean package
-```
-
-4. Execute SQL script(s) to create the database:
+3. Execute SQL script(s) to create the database:
 
 ```bash
 ./mvnw flyway:migrate
@@ -75,6 +69,37 @@ exist, it will be created automatically.
 
 Use the provided `start_server_and_deploy.sh` script (adjust Payara path if needed) to build the project, start the
 server and deploy the application.
+
+#### Alternative: Payara Micro
+
+The Payara Micro server is a JAR file: `payara-micro-6.2025.6.jar`.
+
+##### Configuration
+
+The `domain.xml` file in `payara-micro-6.2025.6.jar` must be changed. Inside that Java archive file its full
+path is: `/MICRO-INF/domain/domain.xml`.
+
+In the `domain.xml` file you must add configurations to the `<resources>` part, so insert the following just before the
+closing tag `</resources>`:
+
+```xml
+
+<jdbc-connection-pool datasource-classname="org.h2.jdbcx.JdbcDataSource" name="myH2Pool"
+                      res-type="javax.sql.DataSource">
+    <property name="password" value=""></property>
+    <property name="user" value="sa"></property>
+    <property name="URL" value="jdbc:h2:file:~/database/todos;DB_CLOSE_DELAY=-1"></property>
+</jdbc-connection-pool>
+<jdbc-resource pool-name="myH2Pool" jndi-name="jdbc/myJtaDataSource"></jdbc-resource>
+```
+
+##### Start
+
+```bash
+java -jar payara-micro-6.2025.6.jar todos.war
+```
+
+You can find the `todos.war` file in the `target` folder of the project after you have executed `./mvnw clean package`.
 
 ### Access the Application
 

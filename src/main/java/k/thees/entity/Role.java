@@ -24,6 +24,10 @@ public class Role {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -31,6 +35,14 @@ public class Role {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Role() {
+    }
+
+    public Role(RoleType roleType) {
+        id = roleType.id;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -42,5 +54,23 @@ public class Role {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    // Must be in sync with content of db table "roles"
+    public static enum RoleType {
+
+        ADMIN(1),
+        REGULAR_USER(2),
+        ;
+
+        private final int id;
+
+        RoleType(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
     }
 }

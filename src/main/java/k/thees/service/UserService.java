@@ -31,7 +31,8 @@ public class UserService {
     }
 
     public User create(User user) {
-        user.setUpdatedBy(securityService.getLoggedInUserOrThrow());
+        User admin = securityService.getLoggedInAdminUserOrThrow();
+        user.setUpdatedBy(admin);
         var now = LocalDateTime.now();
         user.setUpdatedAt(now);
         user.setCreatedAt(now);

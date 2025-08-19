@@ -10,6 +10,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import k.thees.dto.RegistrationDTO;
 import k.thees.dto.UserDTO;
+import k.thees.entity.Role;
 import k.thees.entity.User;
 import k.thees.mapper.UserMapper;
 import k.thees.service.UserService;
@@ -27,19 +28,17 @@ public class RegistrationResource {
 
     @POST
     public Response registerUser(@Valid RegistrationDTO registrationDTO) {
-        // Hash the password
         String passwordHash = BCrypt.hashpw(registrationDTO.password, BCrypt.gensalt());
 
-        // Map to DTO or entity
         UserDTO userDTO = new UserDTO();
         userDTO.username = registrationDTO.username;
         userDTO.email = registrationDTO.email;
         userDTO.passwordHash = passwordHash;
+        userDTO.roleId = registrationDTO.isAdmin ? Role.RoleType.ADMIN.getId() : Role.RoleType.REGULAR_USER.getId();
 
-        // Delegate to existing user creation logic
         User created = userService.create(UserMapper.toEntity(userDTO));
         UserDTO createdDTO = UserMapper.toDTO(created);
-
+        
         return Response.created(URI.create("/api/users/" + createdDTO.id)).entity(createdDTO).build();
     }
 }

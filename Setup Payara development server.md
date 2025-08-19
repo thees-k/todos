@@ -1,56 +1,101 @@
 # Setup the Payara development server that is embedded through the payara-server-maven-plugin
 
-## 1. Find the directory of the Payara development server
+## 1. Make the Maven wrapper `mvnw` executable
+
+```bash
+chmod +x mvnw
+```
+
+## 2. Find the directory of the Payara development server
 
 Start the development server with the Maven wrapper:
 
 ```bash
 ./mvnw payara-server:dev
 ```
-In the log outputs on console you will see something like:
+
+It doesn't matter if it crashes :-)
+
+Look at the log outputs on console and you will see something like:
+
 ```bash
 #!## LogManagerService.postConstruct : rootFolder=/tmp/payara-server-6.2025.6/payara6/glassfish
 ```
 
-Then stop the development server by pressing CTRL+C!
+So we found the directory of the Payara development server, in my example it's `/tmp/payara-server-6.2025.6/payara6`.
 
-## 2. Navigate to server's root directory
+If the server is still running, stop it now by pressing CTRL+C.
 
-```bash
-cd /tmp/payara-server-6.2025.6/payara6
+## 3. Change the `domain.xml` of the server
+
+The full path of the `domain.xml` file is: `<Path to Payara>/glassfish/domains/domain1/config/domain.xml`
+
+So in my example it's: `/tmp/payara-server-6.2025.6/payara6/glassfish/domains/domain1/config/domain.xml`.
+
+In the `domain.xml` file you must add configurations to the `<resources>` part, so insert the following just before the
+closing tag `</resources>`:
+
+```xml
+
+<jdbc-connection-pool datasource-classname="org.h2.jdbcx.JdbcDataSource" name="myH2Pool"
+                      res-type="javax.sql.DataSource">
+    <property name="password" value=""></property>
+    <property name="user" value="sa"></property>
+    <property name="URL" value="jdbc:h2:file:~/database/todos;DB_CLOSE_DELAY=-1"></property>
+</jdbc-connection-pool>
+<jdbc-resource pool-name="myH2Pool" jndi-name="jdbc/myJtaDataSource"></jdbc-resource>
 ```
 
-## 3. Make `asadmin` executable
+By that you created the **JDBC connection pool** "myH2Pool" and the **JDBC resource** "jdbc/myJtaDataSource" inside the
+server.
+
+## 4. Start the development server and deploy the application
+
+```bash
+./mvnw clean package payara-server:dev
+```
+
+## Other things that you can do regarding the Payara development server
+
+After changing into the Payara development server directory (e.g. `cd /tmp/payara-server-6.2025.6/payara6`) ...
+
+### 1. Make `asadmin` executable
 
 ```bash
 chmod +x bin/asadmin
 ```
 
-## 4. Check if server is running
+### 2. Check if the server is running
 
 ```bash
 bin/asadmin list-domains
 ```
 
-## 5. Start the server
+### 3. Start the server
 
 ```bash
 bin/asadmin start-domain
 ```
 
-## 6. Check if JDBC connection pool "myH2Pool" exists
+### 4. Check if JDBC connection pool "myH2Pool" exists
 
 ```bash
 bin/asadmin list-jdbc-connection-pools
 ```
 
-## 7. Check if JDBC resource "jdbc/myJtaDataSource" exists
+### 5. Execute ping test with connection pool "myH2Pool"
 
 ```bash
-bin/asadmin list-jdbc-connection-resources
+bin/asadmin ping-connection-pool myH2Pool
 ```
 
-## 8. Create JDBC connection pool "myH2Pool"
+### 6. Check if JDBC resource "jdbc/myJtaDataSource" exists
+
+```bash
+bin/asadmin list-jdbc-resources
+```
+
+### 7. You could create a JDBC connection pool
 
 ```bash
 bin/asadmin create-jdbc-connection-pool \
@@ -60,7 +105,9 @@ bin/asadmin create-jdbc-connection-pool \
 myH2Pool 
 ```
 
-## 9. Create JDBC resource "jdbc/myJtaDataSource"
+> This is not recommended here because the property "password" with value "" (empty password) can't be set!
+
+### 8. You could create a JDBC resource
 
 ```bash
 bin/asadmin create-jdbc-resource \
@@ -68,57 +115,11 @@ bin/asadmin create-jdbc-resource \
 jdbc/myJtaDataSource    
 ```
 
-## 10. Stop the server
+### 9. Stop the server
 
 ```bash
 bin/asadmin stop-domain
 ```
-
-## 11. Edit domain.xml
-
-E.g., with `nano`:
-
-```bash
-nano glassfish/domains/domain1/config/domain.xml
-```
-
-Change connection pool "myH2Pool" to:
-```xml
-<jdbc-connection-pool datasource-classname="org.h2.jdbcx.JdbcDataSource" name="myH2Pool" res-type="javax.sql.DataSource">
-  <property name="user" value="sa"></property>
-  <property name="password" value=""></property>
-  <property name="URL" value="jdbc:h2:file:~/database/todos;DB_CLOSE_DELAY=-1"></property>
-</jdbc-connection-pool>
-```
-
-So just add the line `<property name="password" value=""></property>`
-
-## 12. Start the server
-
-```bash
-bin/asadmin start-domain
-```
-
-## 13. Execute ping test with connection pool "myH2Pool"
-
-```bash
-bin/asadmin ping-connection-pool myH2Pool
-```
-
-## 14. Stop the server
-
-```bash
-bin/asadmin stop-domain
-```
-
-## 15. Use the development server
- 
-After that you should be able to start the development server with the Maven wrapper:
-
-```bash
-./mvnw payara-server:dev
-```
-
 
 
 

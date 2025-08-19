@@ -26,7 +26,8 @@ public class TaskMapper {
         task.setTitle(dto.title);
         task.setDescription(dto.description);
         task.setDone(dto.done);
-        // createdAt and updatedAt usually managed by DB or service, set if needed
+        task.setCreatedAt(dto.createdAt);
+        task.setUpdatedAt(dto.updatedAt);
         if (dto.updatedById != null) {
             User updatedBy = new User();
             updatedBy.setId(dto.updatedById);
