@@ -97,7 +97,6 @@ class UserServiceTest {
         User storedUser = createUser(1L, "user1", "user1@example.com", "hash1", Role.REGULAR_USER_ID);
         User currentUser = createUser(2L, "admin", "admin@example.com", "hashAdmin", Role.ADMINISTRATOR_ID);
         User updatedUser = createUser(1L, "user1", "user1@example.com", "hash1", Role.ADMINISTRATOR_ID);
-        updatedUser.setUpdatedBy(currentUser);
 
         when(entityManager.find(User.class, 1L)).thenReturn(storedUser);
         when(securityService.getLoggedInUserOrThrow()).thenReturn(currentUser);
@@ -105,8 +104,8 @@ class UserServiceTest {
 
         User result = userService.update(updatedUser);
 
+        updatedUser.setUpdatedBy(currentUser);
         validateUser(updatedUser, result);
-        assertEquals(currentUser, result.getUpdatedBy());
     }
 
     @Test
@@ -114,7 +113,6 @@ class UserServiceTest {
         User storedUser = createUser(1L, "user1", "user1@example.com", "hash1", Role.REGULAR_USER_ID);
         User currentUser = createUser(2L, "admin", "admin@example.com", "hashAdmin", Role.ADMINISTRATOR_ID);
         User updatedUser = createUser(1L, "user1Updated", "user1updated@example.com", "hash1updated", Role.REGULAR_USER_ID);
-        updatedUser.setUpdatedBy(currentUser);
 
         when(entityManager.find(User.class, 1L)).thenReturn(storedUser);
         when(securityService.getLoggedInUserOrThrow()).thenReturn(currentUser);
@@ -122,8 +120,8 @@ class UserServiceTest {
 
         User result = userService.update(updatedUser);
 
+        updatedUser.setUpdatedBy(currentUser);
         validateUser(updatedUser, result);
-        assertEquals(currentUser, result.getUpdatedBy());
     }
 
     @Test
@@ -131,7 +129,6 @@ class UserServiceTest {
         User storedUser = createUser(1L, "user1", "user1@example.com", "hash1", Role.ADMINISTRATOR_ID);
         User currentUser = storedUser;
         User updatedUser = createUser(1L, "user1", "user1@example.com", "hash1", Role.REGULAR_USER_ID);
-        updatedUser.setUpdatedBy(currentUser);
 
         when(entityManager.find(User.class, 1L)).thenReturn(storedUser);
         when(securityService.getLoggedInUserOrThrow()).thenReturn(currentUser);
@@ -139,8 +136,8 @@ class UserServiceTest {
 
         User result = userService.update(updatedUser);
 
+        updatedUser.setUpdatedBy(currentUser);
         validateUser(updatedUser, result);
-        assertEquals(currentUser, result.getUpdatedBy());
     }
 
     @Test
@@ -148,7 +145,6 @@ class UserServiceTest {
         User storedUser = createUser(1L, "user1", "user1@example.com", "hash1", Role.REGULAR_USER_ID);
         User currentUser = createUser(2L, "user2", "user2@example.com", "hash2", Role.REGULAR_USER_ID);
         User updatedUser = createUser(1L, "user1", "user1@example.com", "hash1", Role.ADMINISTRATOR_ID);
-        updatedUser.setUpdatedBy(currentUser);
 
         when(entityManager.find(User.class, 1L)).thenReturn(storedUser);
         when(securityService.getLoggedInUserOrThrow()).thenReturn(currentUser);
@@ -161,7 +157,6 @@ class UserServiceTest {
         User storedUser = createUser(1L, "user1", "user1@example.com", "hash1", Role.REGULAR_USER_ID);
         User currentUser = storedUser;
         User updatedUser = createUser(1L, "user1", "user1@example.com", "hash1", Role.ADMINISTRATOR_ID);
-        updatedUser.setUpdatedBy(currentUser);
 
         when(entityManager.find(User.class, 1L)).thenReturn(storedUser);
         when(securityService.getLoggedInUserOrThrow()).thenReturn(currentUser);
@@ -174,7 +169,6 @@ class UserServiceTest {
         User storedUser = createUser(1L, "user1", "user1@example.com", "hash1", Role.REGULAR_USER_ID);
         User currentUser = createUser(2L, "user2", "user2@example.com", "hash2", Role.REGULAR_USER_ID);
         User updatedUser = createUser(1L, "user1Updated", "user1updated@example.com", "hash1updated", Role.REGULAR_USER_ID);
-        updatedUser.setUpdatedBy(currentUser);
 
         when(entityManager.find(User.class, 1L)).thenReturn(storedUser);
         when(securityService.getLoggedInUserOrThrow()).thenReturn(currentUser);
@@ -187,7 +181,6 @@ class UserServiceTest {
         User storedUser = createUser(1L, "user1", "user1@example.com", "hash1", Role.REGULAR_USER_ID);
         User currentUser = storedUser;
         User updatedUser = createUser(1L, "user1Updated", "user1updated@example.com", "hash1updated", Role.REGULAR_USER_ID);
-        updatedUser.setUpdatedBy(currentUser);
 
         when(entityManager.find(User.class, 1L)).thenReturn(storedUser);
         when(securityService.getLoggedInUserOrThrow()).thenReturn(currentUser);
@@ -195,8 +188,8 @@ class UserServiceTest {
 
         User result = userService.update(updatedUser);
 
+        updatedUser.setUpdatedBy(currentUser);
         validateUser(updatedUser, result);
-        assertEquals(currentUser, result.getUpdatedBy());
     }
 
     @Test
@@ -204,7 +197,6 @@ class UserServiceTest {
         User storedUser = createUser(1L, "user1", "user1@example.com", "hash1", Role.REGULAR_USER_ID);
         User currentUser = storedUser;
         User updatedUser = createUser(1L, "user1Updated", "user1updated@example.com", "hash1updated", Role.REGULAR_USER_ID);
-        updatedUser.setUpdatedBy(currentUser);
 
         when(entityManager.find(User.class, 1L)).thenReturn(storedUser);
         when(securityService.getLoggedInUserOrThrow()).thenReturn(currentUser);
@@ -212,8 +204,8 @@ class UserServiceTest {
 
         User result = userService.update(updatedUser);
 
+        updatedUser.setUpdatedBy(currentUser);
         validateUser(updatedUser, result);
-        assertEquals(currentUser, result.getUpdatedBy());
     }
 
     private void validateUser(User expected, User actual) {
