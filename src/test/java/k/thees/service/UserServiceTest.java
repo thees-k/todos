@@ -5,6 +5,7 @@ import k.thees.entity.Role;
 import k.thees.entity.User;
 import k.thees.security.SecurityService;
 import k.thees.security.UserNotAdminException;
+import k.thees.security.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -88,8 +89,9 @@ class UserServiceTest {
         User user = createUser(99L, "User99", "user99@example.com", "hash99", Role.REGULAR_USER_ID);
         when(entityManager.find(User.class, user.getId())).thenReturn(null);
 
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> userService.update(user));
-        assertEquals("User with id 99 does not exist", ex.getMessage());
+
+        UserNotFoundException ex = assertThrows(UserNotFoundException.class, () -> userService.update(user));
+        assertEquals("User with ID 99 not found", ex.getMessage());
     }
 
     @Test

@@ -9,6 +9,7 @@ import k.thees.entity.Role;
 import k.thees.entity.User;
 import k.thees.security.SecurityService;
 import k.thees.security.UserNotAdminException;
+import k.thees.security.UserNotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -65,7 +66,7 @@ public class UserService {
     public User update(User user) {
 
         User storedUser = findById(user.getId())
-                .orElseThrow(() -> new IllegalArgumentException("User with id " + user.getId() + " does not exist"));
+                .orElseThrow(() -> new UserNotFoundException(user.getId()));
 
         User currentUser = securityService.getLoggedInUserOrThrow();
         checkAdminPermission(currentUser, storedUser, user);
