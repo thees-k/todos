@@ -43,13 +43,15 @@ class UserServiceTest {
         User createdUser = userService.create(alice);
         LocalDateTime afterCreate = LocalDateTime.now();
 
-        assertNotNull(createdUser.getUpdatedAt());
-        assertFalse(createdUser.getUpdatedAt().isBefore(beforeCreate));
-        assertFalse(createdUser.getUpdatedAt().isAfter(afterCreate));
+        validateIsBetween(createdUser.getUpdatedAt(), beforeCreate, afterCreate);
 
-        assertNotNull(createdUser.getCreatedAt());
-        assertFalse(createdUser.getCreatedAt().isBefore(beforeCreate));
-        assertFalse(createdUser.getCreatedAt().isAfter(afterCreate));
+        validateIsBetween(createdUser.getCreatedAt(), beforeCreate, afterCreate);
+    }
+
+    private void validateIsBetween(LocalDateTime time, LocalDateTime beforeCreate, LocalDateTime afterCreate) {
+        assertNotNull(time);
+        assertFalse(time.isBefore(beforeCreate));
+        assertFalse(time.isAfter(afterCreate));
     }
 
     @Test
@@ -63,11 +65,20 @@ class UserServiceTest {
 
 
     @Test
-    void create_shouldUpdatedByToLoggedInUser() {
+    void create_shouldSetUpdatedByToLoggedInUser() {
         User alice = createUser(2, "Alice", "alice@example.com", "hash1", Role.REGULAR_USER_ID);
 
         User createdUser = userService.create(alice);
 
         assertEquals("Admin", createdUser.getUpdatedBy().getUsername());
+    }
+
+    @Test
+    void create_shouldSetUpdatedByToUserWithRoleAdministrator() {
+        User alice = createUser(2, "Alice", "alice@example.com", "hash1", Role.REGULAR_USER_ID);
+
+        User createdUser = userService.create(alice);
+
+        assertEquals(Role.ADMINISTRATOR_ID, createdUser.getUpdatedBy().getRole().getId());
     }
 }
