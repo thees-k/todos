@@ -8,6 +8,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "roles")
 public class Role {
+
+    // These constants must be in sync with the records in the database table "roles"
+    public static int ADMINISTRATOR_ID = 1;
+    public static int REGULAR_USER_ID = 2;
+
     @Id
     @SequenceGenerator(
             name = "roles_seq",
@@ -39,8 +44,8 @@ public class Role {
     public Role() {
     }
 
-    public Role(RoleType roleType) {
-        id = roleType.id;
+    public Role(int roleId) {
+        id = roleId;
     }
 
 
@@ -54,23 +59,5 @@ public class Role {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
-    }
-
-    // Must be in sync with content of db table "roles"
-    public static enum RoleType {
-
-        ADMIN(1),
-        REGULAR_USER(2),
-        ;
-
-        private final int id;
-
-        RoleType(int id) {
-            this.id = id;
-        }
-
-        public int getId() {
-            return id;
-        }
     }
 }

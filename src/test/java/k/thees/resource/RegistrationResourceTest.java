@@ -43,7 +43,7 @@ class RegistrationResourceTest {
         createdUser.setId(1L);
         createdUser.setUsername(registrationDTO.username);
         createdUser.setEmail(registrationDTO.email);
-        createdUser.setRole(new Role(Role.RoleType.REGULAR_USER));
+        createdUser.setRole(new Role(Role.REGULAR_USER_ID));
         createdUser.setPasswordHash("hashedPassword");
 
         when(userService.create(any(User.class))).thenReturn(createdUser);

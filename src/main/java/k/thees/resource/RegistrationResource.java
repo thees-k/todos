@@ -34,11 +34,11 @@ public class RegistrationResource {
         userDTO.username = registrationDTO.username;
         userDTO.email = registrationDTO.email;
         userDTO.passwordHash = passwordHash;
-        userDTO.roleId = registrationDTO.isAdmin ? Role.RoleType.ADMIN.getId() : Role.RoleType.REGULAR_USER.getId();
+        userDTO.roleId = registrationDTO.isAdmin ? Role.ADMINISTRATOR_ID : Role.REGULAR_USER_ID;
 
         User created = userService.create(UserMapper.toEntity(userDTO));
         UserDTO createdDTO = UserMapper.toDTO(created);
-        
+
         return Response.created(URI.create("/api/users/" + createdDTO.id)).entity(createdDTO).build();
     }
 }

@@ -30,8 +30,8 @@ class UserResourceTest {
 
     @Test
     void getAllUsers_returnsUserDTOList() {
-        User user1 = createUser(1L, "Alice", "alice@example.com", Role.RoleType.REGULAR_USER);
-        User user2 = createUser(2L, "Bob", "bob@example.com", Role.RoleType.REGULAR_USER);
+        User user1 = createUser(1L, "Alice", "alice@example.com", Role.REGULAR_USER_ID);
+        User user2 = createUser(2L, "Bob", "bob@example.com", Role.REGULAR_USER_ID);
         when(userService.findAll()).thenReturn(List.of(user1, user2));
         List<UserDTO> expectedUsers = List.of(UserMapper.toDTO(user1), UserMapper.toDTO(user2));
 
@@ -45,7 +45,7 @@ class UserResourceTest {
 
     @Test
     void getUser_existingId_returnsOkResponseWithUserDTO() {
-        User user = createUser(1L, "Alice", "alice@example.com", Role.RoleType.REGULAR_USER);
+        User user = createUser(1L, "Alice", "alice@example.com", Role.REGULAR_USER_ID);
         UserDTO expectedDTO = UserMapper.toDTO(user);
         when(userService.findById(1L)).thenReturn(Optional.of(user));
 
@@ -91,12 +91,12 @@ class UserResourceTest {
         verify(userService).delete(99L);
     }
 
-    private User createUser(Long id, String username, String email, Role.RoleType roleType) {
+    private User createUser(Long id, String username, String email, int roleId) {
         User user = new User();
         user.setId(id);
         user.setUsername(username);
         user.setEmail(email);
-        user.setRole(new Role(roleType));
+        user.setRole(new Role(roleId));
         return user;
     }
 }

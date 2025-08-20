@@ -32,12 +32,12 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        lenient().when(securityService.getLoggedInAdminUserOrThrow()).thenReturn(createUser(1L, "Admin", "admin@example.com", "hash1", Role.RoleType.ADMIN));
+        lenient().when(securityService.getLoggedInAdminUserOrThrow()).thenReturn(createUser(1L, "Admin", "admin@example.com", "hash1", Role.ADMINISTRATOR_ID));
     }
 
     @Test
     void create_shouldUpdateCreatedAtAndUpdatedAtToCurrentOrLater() {
-        User alice = createUser(1, "Alice", "alice@example.com", "hash1", Role.RoleType.REGULAR_USER);
+        User alice = createUser(1, "Alice", "alice@example.com", "hash1", Role.REGULAR_USER_ID);
 
         LocalDateTime beforeCreate = LocalDateTime.now();
         User createdUser = userService.create(alice);
@@ -54,7 +54,7 @@ class UserServiceTest {
 
     @Test
     void create_shouldSetEqualCreatedAtAndUpdatedAt() {
-        User alice = createUser(1, "Alice", "alice@example.com", "hash1", Role.RoleType.REGULAR_USER);
+        User alice = createUser(1, "Alice", "alice@example.com", "hash1", Role.REGULAR_USER_ID);
 
         User createdUser = userService.create(alice);
 
@@ -64,7 +64,7 @@ class UserServiceTest {
 
     @Test
     void create_shouldUpdatedByToLoggedInUser() {
-        User alice = createUser(2, "Alice", "alice@example.com", "hash1", Role.RoleType.REGULAR_USER);
+        User alice = createUser(2, "Alice", "alice@example.com", "hash1", Role.REGULAR_USER_ID);
 
         User createdUser = userService.create(alice);
 

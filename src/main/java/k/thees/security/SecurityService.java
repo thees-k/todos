@@ -31,7 +31,7 @@ public class SecurityService {
 
     public User getLoggedInAdminUserOrThrow() {
         User loggedInUser = getLoggedInUserOrThrow();
-        if (loggedInUser.getRole().getId().equals(Role.RoleType.ADMIN.getId())) {
+        if (loggedInUser.getRole().getId().equals(Role.ADMINISTRATOR_ID)) {
             return loggedInUser;
         } else {
             throw new UserNotAdminException();

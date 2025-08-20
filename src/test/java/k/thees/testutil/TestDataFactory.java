@@ -5,18 +5,18 @@ import k.thees.entity.User;
 
 public class TestDataFactory {
 
-    public static User createUser(long id, String username, String email, String passwordHash, Role.RoleType roleType) {
+    public static User createUser(long id, String username, String email, String passwordHash, int roleId) {
         User user = new User();
         user.setId(id);
         user.setUsername(username);
         user.setEmail(email);
-        user.setRole(new Role(roleType));
+        user.setRole(new Role(roleId));
         user.setPasswordHash(passwordHash);
 
         User admin = new User();
         admin.setId(1L);
         admin.setUsername("Admin");
-        admin.setRole(new Role(Role.RoleType.ADMIN));
+        admin.setRole(new Role(Role.ADMINISTRATOR_ID));
         user.setUpdatedBy(admin);
 
         return user;
