@@ -5,8 +5,10 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import k.thees.entity.Role;
 import k.thees.entity.User;
 import k.thees.security.SecurityService;
+import k.thees.security.UserNotAdminException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -57,6 +59,33 @@ public class UserService {
             return Optional.of(user);
         } catch (jakarta.persistence.NoResultException e) {
             return Optional.empty();
+        }
+    }
+
+    public User update(User user) {
+
+        User storedUser = findById(user.getId())
+                .orElseThrow(() -> new IllegalArgumentException("User with id " + user.getId() + " does not exist"));
+
+        User currentUser = securityService.getLoggedInUserOrThrow();
+        checkAdminPermission(currentUser, storedUser, user);
+
+        storedUser.setUsername(user.getUsername());
+        storedUser.setEmail(user.getEmail());
+        storedUser.setRole(user.getRole());
+        storedUser.setPasswordHash(user.getPasswordHash());
+        storedUser.setUpdatedBy(currentUser);
+        storedUser.setUpdatedAt(LocalDateTime.now());
+
+        return entityManager.merge(storedUser);
+    }
+
+    private void checkAdminPermission(User currentUser, User storedUser, User updatedUser) {
+
+        boolean isRoleChanged = !storedUser.getRole().equals(updatedUser.getRole());
+        boolean isDifferentUser = !currentUser.equals(storedUser);
+        if ((isDifferentUser || isRoleChanged) && !currentUser.getRole().getId().equals(Role.ADMINISTRATOR_ID)) {
+            throw new UserNotAdminException();
         }
     }
 }
