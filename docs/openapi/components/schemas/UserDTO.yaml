@@ -14,12 +14,26 @@ properties:
     format: email
     description: Email address of the user
     example: user@example.com
+  roleId:
+    type: integer
+    description: Role ID of the user
+    example: 2
   passwordHash:
     type: string
     description: Hashed password of the user
     example: $2a$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36Z8a7p1Kq6v5b6Z6a1q9eW
+  createdAt:
+    type: string
+    format: date-time
+    description: Timestamp of user creation
+    example: 2024-01-01T12:00:00Z
+  updatedById:
+    type: integer
+    format: int64
+    description: ID of the user who last updated this user
+    example: 1
   updatedAt:
     type: string
     format: date-time
     description: Timestamp of last update
-    example: 2024-01-01T12:00:00Z
+    example: 2024-01-02T15:30:00Z

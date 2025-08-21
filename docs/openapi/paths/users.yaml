@@ -44,7 +44,9 @@
           format: int64
         description: ID of the user to delete
     responses:
-      '204':
+      '200':
         description: User deleted successfully
       '404':
         description: User not found
+      '403':
+        description: Forbidden - user not authorized to delete
