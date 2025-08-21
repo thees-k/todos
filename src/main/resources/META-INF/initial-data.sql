@@ -2,6 +2,7 @@ DELETE FROM task_list_assignments;
 DELETE FROM tasks;
 DELETE FROM todo_lists;
 DELETE FROM users;
+DELETE FROM roles;
 
 INSERT INTO roles (id, name) VALUES (1, 'Administrator'), (2, 'Regular User');
 
