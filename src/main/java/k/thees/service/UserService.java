@@ -5,7 +5,6 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import k.thees.entity.Role;
 import k.thees.entity.User;
 import k.thees.security.SecurityService;
 import k.thees.security.UserNotAdminException;
@@ -43,13 +42,15 @@ public class UserService {
         return user;
     }
 
-    public boolean delete(Long id) {
-        User user = entityManager.find(User.class, id);
-        if (user != null) {
+    public void delete(Long id) {
+
+        User user = findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        User currentUser = securityService.getLoggedInUserOrThrow();
+        if (currentUser.equals(user) || currentUser.isAdministrator()) {
             entityManager.remove(user);
-            return true;
+        } else {
+            throw new UserNotAdminException();
         }
-        return false;
     }
 
     public Optional<User> findByUsername(String username) {
@@ -85,7 +86,7 @@ public class UserService {
 
         boolean isRoleChanged = !storedUser.getRole().equals(updatedUser.getRole());
         boolean isDifferentUser = !currentUser.equals(storedUser);
-        if ((isDifferentUser || isRoleChanged) && !currentUser.getRole().getId().equals(Role.ADMINISTRATOR_ID)) {
+        if ((isDifferentUser || isRoleChanged) && !currentUser.isAdministrator()) {
             throw new UserNotAdminException();
         }
     }

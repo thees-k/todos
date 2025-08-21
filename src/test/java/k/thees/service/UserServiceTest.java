@@ -236,4 +236,48 @@ class UserServiceTest {
 
         validateIsBetween(result.getUpdatedAt(), beforeUpdate, afterUpdate);
     }
+
+    @Test
+    void delete_shouldRemoveUser_whenCurrentUserIsAdmin() {
+        User userToDelete = createUser(1L, "user1", "user1@example.com", "hash1", Role.REGULAR_USER_ID);
+        User adminUser = createUser(2L, "admin", "admin@example.com", "hashAdmin", Role.ADMINISTRATOR_ID);
+
+        when(entityManager.find(User.class, 1L)).thenReturn(userToDelete);
+        when(securityService.getLoggedInUserOrThrow()).thenReturn(adminUser);
+
+        userService.delete(1L);
+
+        verify(entityManager).remove(userToDelete);
+    }
+
+    @Test
+    void delete_shouldRemoveUser_whenCurrentUserIsSameUser() {
+        User userToDelete = createUser(1L, "user1", "user1@example.com", "hash1", Role.REGULAR_USER_ID);
+
+        when(entityManager.find(User.class, 1L)).thenReturn(userToDelete);
+        when(securityService.getLoggedInUserOrThrow()).thenReturn(userToDelete);
+
+        userService.delete(1L);
+
+        verify(entityManager).remove(userToDelete);
+    }
+
+    @Test
+    void delete_shouldThrowUserNotFoundException_whenUserDoesNotExist() {
+        when(entityManager.find(User.class, 99L)).thenReturn(null);
+
+        UserNotFoundException ex = assertThrows(UserNotFoundException.class, () -> userService.delete(99L));
+        assertEquals("User with ID 99 not found", ex.getMessage());
+    }
+
+    @Test
+    void delete_shouldThrowUserNotAdminException_whenCurrentUserIsNotAdminOrSameUser() {
+        User userToDelete = createUser(1L, "user1", "user1@example.com", "hash1", Role.REGULAR_USER_ID);
+        User otherUser = createUser(2L, "user2", "user2@example.com", "hash2", Role.REGULAR_USER_ID);
+
+        when(entityManager.find(User.class, 1L)).thenReturn(userToDelete);
+        when(securityService.getLoggedInUserOrThrow()).thenReturn(otherUser);
+
+        assertThrows(UserNotAdminException.class, () -> userService.delete(1L));
+    }
 }

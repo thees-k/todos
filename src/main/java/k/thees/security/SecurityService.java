@@ -4,7 +4,6 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.SecurityContext;
-import k.thees.entity.Role;
 import k.thees.entity.User;
 import k.thees.service.UserService;
 
@@ -31,7 +30,7 @@ public class SecurityService {
 
     public User getLoggedInAdminUserOrThrow() {
         User loggedInUser = getLoggedInUserOrThrow();
-        if (loggedInUser.getRole().getId().equals(Role.ADMINISTRATOR_ID)) {
+        if (loggedInUser.isAdministrator()) {
             return loggedInUser;
         } else {
             throw new UserNotAdminException();

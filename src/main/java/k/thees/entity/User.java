@@ -105,6 +105,10 @@ public class User {
         this.updatedBy = updatedBy;
     }
 
+    public boolean isAdministrator() {
+        return this.role.getId().equals(Role.ADMINISTRATOR_ID);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

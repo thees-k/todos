@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import static k.thees.testutil.TestDataFactory.createUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -70,27 +71,36 @@ class UserResourceTest {
     }
 
     @Test
-    void deleteUser_existingId_returnsNoContent() {
-        when(userService.delete(1L)).thenReturn(true);
+    void deleteUser_existingId_returnsOk() {
+        doNothing().when(userService).delete(1L);
 
         try (Response response = userResource.deleteUser(1L)) {
-            assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+            assertNull(response.getEntity());
         }
         verify(userService).delete(1L);
     }
 
     @Test
     void deleteUser_nonExistingId_returnsNotFound() {
-        when(userService.delete(99L)).thenReturn(false);
+        doThrow(new UserNotFoundException(99L)).when(userService).delete(99L);
 
         try (Response response = userResource.deleteUser(99L)) {
             assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            assertEquals("User with ID 99 not found", response.getEntity());
         }
         verify(userService).delete(99L);
+    }
+
+    @Test
+    void deleteUser_notAdmin_returnsForbidden() {
+        doThrow(new UserNotAdminException()).when(userService).delete(1L);
+
+        try (Response response = userResource.deleteUser(1L)) {
+            assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
+            assertEquals("User not authorized to delete another user", response.getEntity());
+        }
+        verify(userService).delete(1L);
     }
 
     @Test

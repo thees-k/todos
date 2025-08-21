@@ -43,9 +43,14 @@ public class UserResource {
     @DELETE
     @Path("/{id}")
     public Response deleteUser(@PathParam("id") Long id) {
-        boolean deleted = userService.delete(id);
-        return deleted ? Response.noContent().build()
-                : Response.status(Response.Status.NOT_FOUND).build();
+        try {
+            userService.delete(id);
+            return Response.ok().build();
+        } catch (UserNotFoundException exception) {
+            return Response.status(Response.Status.NOT_FOUND).entity(exception.getMessage()).build();
+        } catch (UserNotAdminException exception) {
+            return Response.status(Response.Status.FORBIDDEN).entity("User not authorized to delete another user").build();
+        }
     }
 
     @PUT
