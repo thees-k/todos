@@ -50,3 +50,33 @@
         description: User not found
       '403':
         description: Forbidden - user not authorized to delete
+  put:
+    summary: Update a user
+    description: Updates a user by ID.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: ID of the user to update
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/UserDTO.yaml'
+    responses:
+      '200':
+        description: User updated successfully
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/UserDTO.yaml'
+      '400':
+        description: Bad request - ID mismatch
+      '404':
+        description: User not found
+      '403':
+        description: Forbidden - user not authorized to update
