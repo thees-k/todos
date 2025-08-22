@@ -31,8 +31,13 @@ JSON
 # Print JSON that will be sent:
 # cat "$tmp"
 
-curl --fail --show-error --silent \
+response_entity=$(curl -sS \
   -X POST "$API_URL" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
-  --data-binary @"$tmp" | jq .
+  --data-binary @"$tmp")
+
+# If the response is not a JSON object, print it. Otherwise, use jq to pretty-print it.
+if ! echo "$response_entity" | jq 2>/dev/null; then
+  echo "$response_entity"
+fi

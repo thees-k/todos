@@ -8,6 +8,8 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
+import java.time.format.DateTimeParseException;
+
 @Provider
 public class JsonParsingExceptionMapper implements ExceptionMapper<Exception> {
 
@@ -16,11 +18,14 @@ public class JsonParsingExceptionMapper implements ExceptionMapper<Exception> {
 
         Throwable cause = ExceptionUtils.getRootCause(exception);
 
-        if (cause instanceof JsonParsingException || cause instanceof JsonbException || cause instanceof BadRequestException) {
+        if (cause instanceof JsonParsingException || cause instanceof JsonbException || cause instanceof BadRequestException || cause instanceof DateTimeParseException) {
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~ BAD REQUEST ~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            cause.printStackTrace();
             return Response.status(Response.Status.BAD_REQUEST)
                            .entity("Malformed JSON request")
                            .build();
         } else {
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~ INTERNAL SERVER ERROR ~~~~~~~~~~~~~~~~~~~~~~~~~~");
             cause.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                            .entity("Internal server error")
