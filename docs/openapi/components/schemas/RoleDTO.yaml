@@ -1,0 +1,10 @@
+type: object
+properties:
+  id:
+    type: integer
+    description: Unique identifier of the role
+    example: 1
+  name:
+    type: string
+    description: Name of the role
+    example: Administrator

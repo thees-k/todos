@@ -29,3 +29,8 @@ paths:
   /users/{id}:
     $ref: './paths/users.yaml#/~1users~1{id}'
 
+  /roles:
+    $ref: './paths/roles.yaml#/~1roles'
+
+  /roles/{id}:
+    $ref: './paths/roles.yaml#/~1roles~1{id}'

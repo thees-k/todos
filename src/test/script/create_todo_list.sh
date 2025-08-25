@@ -3,11 +3,12 @@ set -euo pipefail
 
 TOKEN=$(./register.sh alice)
 
-API_URL="http://localhost:8080/todos/api/todolists"
-[ -n "$TOKEN" ] || {
+if [ -z "$TOKEN" ]; then
   echo "TOKEN is missing"
   exit 1
-}
+fi
+
+API_URL="http://localhost:8080/todos/api/todolists"
 
 tmp=$(mktemp --suffix=.json)
 trap 'rm -f "$tmp"' EXIT
