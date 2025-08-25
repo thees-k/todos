@@ -14,11 +14,7 @@
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                token:
-                  type: string
-                  description: JWT token for authenticated user
+              $ref: '../components/schemas/TokenDTO.yaml'
       '401':
         description: Invalid credentials
         content:

@@ -9,6 +9,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import k.thees.dto.AuthenticationDTO;
+import k.thees.dto.TokenDTO;
 import k.thees.entity.User;
 import k.thees.service.UserService;
 import k.thees.util.JwtUtil;
@@ -35,8 +36,5 @@ public class AuthenticationResource {
                 .orElseGet(() -> Response.status(Response.Status.UNAUTHORIZED)
                                          .entity("Invalid credentials")
                                          .build());
-    }
-
-    public record TokenDTO(String token) {
     }
 }
