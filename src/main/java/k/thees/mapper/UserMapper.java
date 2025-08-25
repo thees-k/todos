@@ -13,7 +13,6 @@ public class UserMapper {
         dto.username = user.getUsername();
         dto.email = user.getEmail();
         dto.roleId = user.getRole().getId();
-        dto.passwordHash = user.getPasswordHash();
         dto.createdAt = user.getCreatedAt();
         dto.updatedById = user.getUpdatedBy() == null ? null : user.getUpdatedBy().getId();
         dto.updatedAt = user.getUpdatedAt();
@@ -31,7 +30,6 @@ public class UserMapper {
         role.setId(dto.roleId);
         user.setRole(role);
 
-        user.setPasswordHash(dto.passwordHash);
         user.setCreatedAt(dto.createdAt);
         if (dto.updatedById != null) {
             User updatedBy = new User();

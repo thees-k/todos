@@ -61,7 +61,8 @@ class RegistrationResourceTest {
         assertEquals(createdUser.getId(), returnedDTO.id);
         assertEquals(createdUser.getUsername(), returnedDTO.username);
         assertEquals(createdUser.getEmail(), returnedDTO.email);
-        assertEquals(createdUser.getPasswordHash(), returnedDTO.passwordHash);
+        assertNotNull(createdUser.getPasswordHash());
+        assertFalse(createdUser.getPasswordHash().isBlank());
 
         // Capture the User passed to userService.create() to verify password hashing
         ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);

@@ -30,13 +30,13 @@ public class RegistrationResource {
     public Response registerUser(@Valid RegistrationDTO registrationDTO) {
         String passwordHash = BCrypt.hashpw(registrationDTO.password, BCrypt.gensalt());
 
-        UserDTO userDTO = new UserDTO();
-        userDTO.username = registrationDTO.username;
-        userDTO.email = registrationDTO.email;
-        userDTO.passwordHash = passwordHash;
-        userDTO.roleId = registrationDTO.isAdmin ? Role.ADMINISTRATOR_ID : Role.REGULAR_USER_ID;
+        User user = new User();
+        user.setUsername(registrationDTO.username);
+        user.setEmail(registrationDTO.email);
+        user.setPasswordHash(passwordHash);
+        user.setRole(new Role(registrationDTO.isAdmin ? Role.ADMINISTRATOR_ID : Role.REGULAR_USER_ID));
 
-        User created = userService.create(UserMapper.toEntity(userDTO));
+        User created = userService.create(user);
         UserDTO createdDTO = UserMapper.toDTO(created);
 
         return Response.created(URI.create("/api/users/" + createdDTO.id)).entity(createdDTO).build();
