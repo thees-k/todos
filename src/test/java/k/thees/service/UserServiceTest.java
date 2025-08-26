@@ -7,6 +7,7 @@ import k.thees.entity.User;
 import k.thees.security.SecurityService;
 import k.thees.security.UserNotAdminException;
 import k.thees.security.UserNotFoundException;
+import k.thees.security.UsernameAlreadyExistsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -249,6 +250,22 @@ class UserServiceTest {
 
         updatedUser.setUpdatedBy(currentUser);
         validateUser(updatedUser, result);
+    }
+
+    @Test
+    void update_usernameExists() {
+        User storedUser = createUser(1L, "user1", "user1@example.com", "hash1", Role.REGULAR_USER_ID);
+        User updatedUser = createUser(1L, "newUsername", "user1@example.com", "hash1", Role.REGULAR_USER_ID);
+        User existingUser = createUser(2L, "newUsername", "existingUser@example.com", "hash2", Role.REGULAR_USER_ID);
+
+        when(entityManager.find(User.class, 1L)).thenReturn(storedUser);
+
+        TypedQuery<User> query = mock(TypedQuery.class);
+        when(entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
+        when(query.setParameter("username", updatedUser.getUsername())).thenReturn(query);
+        when(query.getSingleResult()).thenReturn(existingUser);
+
+        assertThrows(UsernameAlreadyExistsException.class, () -> userService.update(updatedUser));
     }
 
     private void validateUser(User expected, User actual) {
