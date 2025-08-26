@@ -1,6 +1,7 @@
 package k.thees.service;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import k.thees.entity.Role;
 import k.thees.entity.User;
 import k.thees.security.SecurityService;
@@ -104,6 +105,11 @@ class UserServiceTest {
         when(securityService.getLoggedInUserOrThrow()).thenReturn(currentUser);
         when(entityManager.merge(any())).thenAnswer(i -> i.getArgument(0));
 
+        TypedQuery<User> query = mock(TypedQuery.class);
+        when(entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
+        when(query.setParameter("username", updatedUser.getUsername())).thenReturn(query);
+        when(query.getSingleResult()).thenReturn(updatedUser);
+
         User result = userService.update(updatedUser);
 
         updatedUser.setUpdatedBy(currentUser);
@@ -119,6 +125,11 @@ class UserServiceTest {
         when(entityManager.find(User.class, 1L)).thenReturn(storedUser);
         when(securityService.getLoggedInUserOrThrow()).thenReturn(currentUser);
         when(entityManager.merge(any())).thenAnswer(i -> i.getArgument(0));
+
+        TypedQuery<User> query = mock(TypedQuery.class);
+        when(entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
+        when(query.setParameter("username", updatedUser.getUsername())).thenReturn(query);
+        when(query.getSingleResult()).thenReturn(updatedUser);
 
         User result = userService.update(updatedUser);
 
@@ -136,6 +147,11 @@ class UserServiceTest {
         when(securityService.getLoggedInUserOrThrow()).thenReturn(currentUser);
         when(entityManager.merge(any())).thenAnswer(i -> i.getArgument(0));
 
+        TypedQuery<User> query = mock(TypedQuery.class);
+        when(entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
+        when(query.setParameter("username", updatedUser.getUsername())).thenReturn(query);
+        when(query.getSingleResult()).thenReturn(updatedUser);
+
         User result = userService.update(updatedUser);
 
         updatedUser.setUpdatedBy(currentUser);
@@ -151,6 +167,11 @@ class UserServiceTest {
         when(entityManager.find(User.class, 1L)).thenReturn(storedUser);
         when(securityService.getLoggedInUserOrThrow()).thenReturn(currentUser);
 
+        TypedQuery<User> query = mock(TypedQuery.class);
+        when(entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
+        when(query.setParameter("username", updatedUser.getUsername())).thenReturn(query);
+        when(query.getSingleResult()).thenReturn(updatedUser);
+
         assertThrows(UserNotAdminException.class, () -> userService.update(updatedUser));
     }
 
@@ -162,6 +183,11 @@ class UserServiceTest {
 
         when(entityManager.find(User.class, 1L)).thenReturn(storedUser);
         when(securityService.getLoggedInUserOrThrow()).thenReturn(currentUser);
+
+        TypedQuery<User> query = mock(TypedQuery.class);
+        when(entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
+        when(query.setParameter("username", updatedUser.getUsername())).thenReturn(query);
+        when(query.getSingleResult()).thenReturn(updatedUser);
 
         assertThrows(UserNotAdminException.class, () -> userService.update(updatedUser));
     }
@@ -175,6 +201,11 @@ class UserServiceTest {
         when(entityManager.find(User.class, 1L)).thenReturn(storedUser);
         when(securityService.getLoggedInUserOrThrow()).thenReturn(currentUser);
 
+        TypedQuery<User> query = mock(TypedQuery.class);
+        when(entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
+        when(query.setParameter("username", updatedUser.getUsername())).thenReturn(query);
+        when(query.getSingleResult()).thenReturn(updatedUser);
+
         assertThrows(UserNotAdminException.class, () -> userService.update(updatedUser));
     }
 
@@ -187,6 +218,11 @@ class UserServiceTest {
         when(entityManager.find(User.class, 1L)).thenReturn(storedUser);
         when(securityService.getLoggedInUserOrThrow()).thenReturn(currentUser);
         when(entityManager.merge(any())).thenAnswer(i -> i.getArgument(0));
+
+        TypedQuery<User> query = mock(TypedQuery.class);
+        when(entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
+        when(query.setParameter("username", updatedUser.getUsername())).thenReturn(query);
+        when(query.getSingleResult()).thenReturn(updatedUser);
 
         User result = userService.update(updatedUser);
 
@@ -203,6 +239,11 @@ class UserServiceTest {
         when(entityManager.find(User.class, 1L)).thenReturn(storedUser);
         when(securityService.getLoggedInUserOrThrow()).thenReturn(currentUser);
         when(entityManager.merge(any())).thenAnswer(i -> i.getArgument(0));
+
+        TypedQuery<User> query = mock(TypedQuery.class);
+        when(entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
+        when(query.setParameter("username", updatedUser.getUsername())).thenReturn(query);
+        when(query.getSingleResult()).thenReturn(updatedUser);
 
         User result = userService.update(updatedUser);
 
@@ -229,6 +270,11 @@ class UserServiceTest {
         when(entityManager.find(User.class, 1L)).thenReturn(storedUser);
         when(securityService.getLoggedInUserOrThrow()).thenReturn(currentUser);
         when(entityManager.merge(any())).thenAnswer(i -> i.getArgument(0));
+
+        TypedQuery<User> query = mock(TypedQuery.class);
+        when(entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
+        when(query.setParameter("username", updatedUser.getUsername())).thenReturn(query);
+        when(query.getSingleResult()).thenReturn(updatedUser);
 
         LocalDateTime beforeUpdate = LocalDateTime.now();
         User result = userService.update(updatedUser);

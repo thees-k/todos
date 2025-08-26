@@ -1,0 +1,14 @@
+package k.thees.security;
+
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.ExceptionMapper;
+import jakarta.ws.rs.ext.Provider;
+
+@Provider
+public class UsernameAlreadyExistsExceptionMapper implements ExceptionMapper<UsernameAlreadyExistsException> {
+
+    @Override
+    public Response toResponse(UsernameAlreadyExistsException exception) {
+        return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+    }
+}

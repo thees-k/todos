@@ -9,6 +9,7 @@ import k.thees.entity.User;
 import k.thees.security.SecurityService;
 import k.thees.security.UserNotAdminException;
 import k.thees.security.UserNotFoundException;
+import k.thees.security.UsernameAlreadyExistsException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -65,9 +66,10 @@ public class UserService {
     }
 
     public User update(User user) {
-
         User storedUser = findById(user.getId())
                 .orElseThrow(() -> new UserNotFoundException(user.getId()));
+
+        checkUsernameExistence(user);
 
         User currentUser = securityService.getLoggedInUserOrThrow();
         checkAdminPermission(currentUser, storedUser, user);
@@ -80,6 +82,14 @@ public class UserService {
         storedUser.setUpdatedAt(LocalDateTime.now());
 
         return entityManager.merge(storedUser);
+    }
+
+    private void checkUsernameExistence(User user) {
+        findByUsername(user.getUsername())
+                .filter(loadedUser -> !loadedUser.equals(user))
+                .ifPresent(loadedUser -> {
+                    throw new UsernameAlreadyExistsException(user.getUsername());
+                });
     }
 
     private void checkAdminPermission(User currentUser, User storedUser, User updatedUser) {

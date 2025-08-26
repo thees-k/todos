@@ -1,6 +1,7 @@
 package k.thees.resource;
 
 import jakarta.ws.rs.core.Response;
+import k.thees.dto.UpdateUserDTO;
 import k.thees.dto.UserDTO;
 import k.thees.entity.Role;
 import k.thees.entity.User;
@@ -105,11 +106,10 @@ class UserResourceTest {
 
     @Test
     void updateUser_successfulUpdate_returnsOkWithUpdatedUserDTO() {
-        UserDTO userDTO = createUserDTO(1L, "Alice", "alice@example.com", Role.REGULAR_USER_ID);
-        User user = UserMapper.toEntity(userDTO);
+        UpdateUserDTO userDTO = createUserDTO("Alice", "Alice", "alice@example.com", Role.REGULAR_USER_ID);
         User updatedUser = createUser(1L, "Alice", "alice@example.com", "hash1", Role.REGULAR_USER_ID);
 
-        when(userService.update(user)).thenReturn(updatedUser);
+        when(userService.update(any(User.class))).thenReturn(updatedUser);
 
         UserDTO responseDTO;
         try (Response response = userResource.updateUser(1L, userDTO)) {
@@ -118,54 +118,40 @@ class UserResourceTest {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        assertEquals(userDTO.id, responseDTO.id);
         assertEquals(userDTO.username, responseDTO.username);
-        verify(userService).update(user);
-    }
-
-    @Test
-    void updateUser_idMismatch_returnsBadRequest() {
-        UserDTO userDTO = createUserDTO(2L, "Alice", "alice@example.com", Role.REGULAR_USER_ID);
-
-        try (Response response = userResource.updateUser(1L, userDTO)) {
-            assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
-            assertEquals("ID in path and body must match", response.getEntity());
-        }
-        verify(userService, never()).update(any());
+        verify(userService).update(any(User.class));
     }
 
     @Test
     void updateUser_userNotFound_returnsNotFound() {
-        UserDTO userDTO = createUserDTO(1L, "Alice", "alice@example.com", Role.REGULAR_USER_ID);
-        User user = UserMapper.toEntity(userDTO);
+        UpdateUserDTO userDTO = createUserDTO("Alice", "Alice", "alice@example.com", Role.REGULAR_USER_ID);
 
-        when(userService.update(user)).thenThrow(new UserNotFoundException(1L));
+        when(userService.update(any(User.class))).thenThrow(new UserNotFoundException(1L));
 
         try (Response response = userResource.updateUser(1L, userDTO)) {
             assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
             assertEquals("User with ID 1 not found", response.getEntity());
         }
-        verify(userService).update(user);
+        verify(userService).update(any(User.class));
     }
 
     @Test
     void updateUser_userNotAdmin_returnsForbidden() {
-        UserDTO userDTO = createUserDTO(1L, "Alice", "alice@example.com", Role.REGULAR_USER_ID);
-        User user = UserMapper.toEntity(userDTO);
+        UpdateUserDTO userDTO = createUserDTO("Alice", "Alice", "alice@example.com", Role.REGULAR_USER_ID);
 
-        when(userService.update(user)).thenThrow(new UserNotAdminException());
+        when(userService.update(any(User.class))).thenThrow(new UserNotAdminException());
 
         try (Response response = userResource.updateUser(1L, userDTO)) {
             assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
             assertEquals("User not authorized to update", response.getEntity());
         }
-        verify(userService).update(user);
+        verify(userService).update(any(User.class));
     }
 
-    private UserDTO createUserDTO(Long id, String username, String email, int roleId) {
-        UserDTO dto = new UserDTO();
-        dto.id = id;
+    private UpdateUserDTO createUserDTO(String username, String password, String email, int roleId) {
+        UpdateUserDTO dto = new UpdateUserDTO();
         dto.username = username;
+        dto.password = password;
         dto.email = email;
         dto.roleId = roleId;
         return dto;
