@@ -16,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.Optional;
 
 import static k.thees.testutil.TestDataFactory.createUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -51,24 +50,14 @@ class UserResourceTest {
     void getUser_existingId_returnsOkResponseWithUserDTO() {
         User user = createUser(1L, "Alice", "alice@example.com", "hash1", Role.REGULAR_USER_ID);
         UserDTO expectedDTO = UserMapper.toDTO(user);
-        when(userService.findById(1L)).thenReturn(Optional.of(user));
+        when(userService.findByIdOrThrow(1L)).thenReturn(user);
 
         Response response = userResource.getUser(1L);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         UserDTO dto = (UserDTO) response.getEntity();
         assertEquals(expectedDTO, dto);
-        verify(userService).findById(1L);
-    }
-
-    @Test
-    void getUser_nonExistingId_returnsNotFound() {
-        when(userService.findById(99L)).thenReturn(Optional.empty());
-
-        Response response = userResource.getUser(99L);
-
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
-        verify(userService).findById(99L);
+        verify(userService).findByIdOrThrow(1L);
     }
 
     @Test

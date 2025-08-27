@@ -37,11 +37,8 @@ public class UserResource {
     @GET
     @Path("/{id}")
     public Response getUser(@PathParam("id") Long id) {
-        return userService.findById(id)
-                          .map(UserMapper::toDTO)
-                          .map(Response::ok)
-                          .orElse(Response.status(Response.Status.NOT_FOUND))
-                          .build();
+        User user = userService.findByIdOrThrow(id);
+        return Response.ok(UserMapper.toDTO(user)).build();
     }
 
     @DELETE

@@ -29,8 +29,13 @@ public class UserService {
         return entityManager.createQuery("SELECT u FROM User u ORDER BY u.id", User.class).getResultList();
     }
 
-    public Optional<User> findById(Long id) {
-        return Optional.ofNullable(entityManager.find(User.class, id));
+    public User findByIdOrThrow(Long id) throws UserNotFoundException {
+        User user = entityManager.find(User.class, id);
+        if (user == null) {
+            throw new UserNotFoundException(id);
+        } else {
+            return user;
+        }
     }
 
     public User create(User user) {
@@ -45,7 +50,7 @@ public class UserService {
 
     public void delete(Long id) {
 
-        User user = findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        User user = findByIdOrThrow(id);
         User currentUser = securityService.getLoggedInUserOrThrow();
         if (currentUser.equals(user) || currentUser.isAdministrator()) {
             entityManager.remove(user);
@@ -66,8 +71,7 @@ public class UserService {
     }
 
     public User update(User user) {
-        User storedUser = findById(user.getId())
-                .orElseThrow(() -> new UserNotFoundException(user.getId()));
+        User storedUser = findByIdOrThrow(user.getId());
 
         checkUsernameExistence(user);
 
@@ -84,7 +88,7 @@ public class UserService {
         return entityManager.merge(storedUser);
     }
 
-    private void checkUsernameExistence(User user) {
+    private void checkUsernameExistence(User user) throws UsernameAlreadyExistsException {
         findByUsername(user.getUsername())
                 .filter(loadedUser -> !loadedUser.equals(user))
                 .ifPresent(loadedUser -> {
@@ -92,7 +96,7 @@ public class UserService {
                 });
     }
 
-    private void checkAdminPermission(User currentUser, User storedUser, User updatedUser) {
+    private void checkAdminPermission(User currentUser, User storedUser, User updatedUser) throws UserNotAdminException {
 
         boolean isRoleChanged = !storedUser.getRole().equals(updatedUser.getRole());
         boolean isDifferentUser = !currentUser.equals(storedUser);
