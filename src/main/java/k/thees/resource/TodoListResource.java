@@ -4,8 +4,10 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import k.thees.dto.CreateTodoListDTO;
 import k.thees.dto.TodoListDTO;
 import k.thees.entity.TodoList;
+import k.thees.entity.User;
 import k.thees.mapper.TodoListMapper;
 import k.thees.service.TodoListService;
 
@@ -43,6 +45,21 @@ public class TodoListResource {
     @POST
     public Response createTodoList(TodoListDTO todoListDTO) {
         TodoList todoList = TodoListMapper.toEntity(todoListDTO);
+        TodoList created = todoListService.create(todoList);
+        TodoListDTO createdDTO = TodoListMapper.toDTO(created);
+        return Response.created(URI.create("/api/todolists/" + createdDTO.id)).entity(createdDTO).build();
+    }
+
+    @POST
+    public Response createTodoList(CreateTodoListDTO todoListDTO) {
+
+        TodoList todoList = new TodoList();
+        todoList.setName(todoListDTO.name);
+        todoList.setDescription(todoListDTO.description);
+        todoList.setDone(todoListDTO.isDone);
+        todoList.setOwner(new User(todoListDTO.ownerId));
+        todoList.setPublic(todoListDTO.isPublic);
+
         TodoList created = todoListService.create(todoList);
         TodoListDTO createdDTO = TodoListMapper.toDTO(created);
         return Response.created(URI.create("/api/todolists/" + createdDTO.id)).entity(createdDTO).build();

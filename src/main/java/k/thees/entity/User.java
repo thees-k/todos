@@ -41,6 +41,13 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    public User() {
+    }
+
+    public User(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

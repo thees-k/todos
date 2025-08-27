@@ -1,6 +1,7 @@
 package k.thees.resource;
 
 import jakarta.ws.rs.core.Response;
+import k.thees.dto.CreateTodoListDTO;
 import k.thees.dto.TodoListDTO;
 import k.thees.entity.TodoList;
 import k.thees.mapper.TodoListMapper;
@@ -68,12 +69,13 @@ class TodoListResourceTest {
 
     @Test
     void createTodoList_shouldReturnCreatedResponseWithLocationAndEntity() {
-        TodoListDTO inputDTO = new TodoListDTO();
+
+        CreateTodoListDTO inputDTO = new CreateTodoListDTO();
         inputDTO.name = "New List";
-        TodoListMapper.toEntity(inputDTO);
 
         TodoList createdList = createTodoList(1L, "New List");
         TodoListDTO expectedDTO = TodoListMapper.toDTO(createdList);
+
         when(todoListService.create(any(TodoList.class))).thenReturn(createdList);
 
         TodoListDTO returnedDTO;

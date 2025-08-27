@@ -3,6 +3,7 @@ package k.thees.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -46,7 +47,7 @@ public class TodoList {
             joinColumns = @JoinColumn(name = "list_id"),
             inverseJoinColumns = @JoinColumn(name = "task_id")
     )
-    private Set<Task> tasks;
+    private Set<Task> tasks = new HashSet<>();
 
     public Long getId() {
         return id;
