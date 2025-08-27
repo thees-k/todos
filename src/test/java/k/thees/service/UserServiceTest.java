@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 
 import static k.thees.testutil.TestDataFactory.createUser;
+import static k.thees.testutil.ValidationUtils.validateIsBetween;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -48,14 +49,7 @@ class UserServiceTest {
         LocalDateTime afterCreate = LocalDateTime.now();
 
         validateIsBetween(createdUser.getUpdatedAt(), beforeCreate, afterCreate);
-
         validateIsBetween(createdUser.getCreatedAt(), beforeCreate, afterCreate);
-    }
-
-    private void validateIsBetween(LocalDateTime time, LocalDateTime beforeCreate, LocalDateTime afterCreate) {
-        assertNotNull(time);
-        assertFalse(time.isBefore(beforeCreate));
-        assertFalse(time.isAfter(afterCreate));
     }
 
     @Test
