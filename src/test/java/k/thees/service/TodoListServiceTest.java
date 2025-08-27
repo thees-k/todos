@@ -16,7 +16,9 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 
 import static k.thees.testutil.TestDataFactory.createUser;
-import static org.junit.jupiter.api.Assertions.*;
+import static k.thees.testutil.ValidationUtils.validateIsBetween;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,15 +46,18 @@ class TodoListServiceTest {
         TodoList createdTodoList = todoListService.create(todoList);
         LocalDateTime afterCreate = LocalDateTime.now();
 
-        assertNotNull(createdTodoList.getCreatedAt());
-        assertNotNull(createdTodoList.getUpdatedAt());
-        assertFalse(createdTodoList.getCreatedAt().isBefore(beforeCreate));
-        assertFalse(createdTodoList.getCreatedAt().isAfter(afterCreate));
-        assertFalse(createdTodoList.getUpdatedAt().isBefore(beforeCreate));
-        assertFalse(createdTodoList.getUpdatedAt().isAfter(afterCreate));
+        validateIsBetween(createdTodoList.getCreatedAt(), beforeCreate, afterCreate);
+        validateIsBetween(createdTodoList.getUpdatedAt(), beforeCreate, afterCreate);
 
         assertNotNull(createdTodoList.getUpdatedBy());
         assertEquals("Alice", createdTodoList.getUpdatedBy().getUsername());
+    }
+
+    @Test
+    void create_shouldSetEqualCreatedAtAndUpdatedAt() {
+        TodoList todoList = createTodoList(null, "New List", "Description", false, false);
+        TodoList createdTodoList = todoListService.create(todoList);
+        assertEquals(createdTodoList.getCreatedAt(), createdTodoList.getUpdatedAt());
     }
 
     @Test
@@ -66,9 +71,7 @@ class TodoListServiceTest {
         LocalDateTime afterUpdate = LocalDateTime.now();
 
         verify(entityManager).merge(todoList);
-        assertNotNull(updatedTodoList.getUpdatedAt());
-        assertFalse(updatedTodoList.getUpdatedAt().isBefore(beforeUpdate));
-        assertFalse(updatedTodoList.getUpdatedAt().isAfter(afterUpdate));
+        validateIsBetween(updatedTodoList.getUpdatedAt(), beforeUpdate, afterUpdate);
 
         assertNotNull(updatedTodoList.getUpdatedBy());
         assertEquals("Alice", updatedTodoList.getUpdatedBy().getUsername());
