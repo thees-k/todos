@@ -9,9 +9,6 @@ import k.thees.dto.UserDTO;
 import k.thees.entity.Role;
 import k.thees.entity.User;
 import k.thees.mapper.UserMapper;
-import k.thees.security.UserNotAdminException;
-import k.thees.security.UserNotFoundException;
-import k.thees.security.UsernameAlreadyExistsException;
 import k.thees.service.UserService;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -61,15 +58,7 @@ public class UserResource {
         userToUpdate.setEmail(updateUserDTO.email);
         userToUpdate.setRole(new Role(updateUserDTO.roleId));
 
-        try {
-            User updatedUser = userService.update(userToUpdate);
-            return Response.ok(UserMapper.toDTO(updatedUser)).build();
-        } catch (UserNotFoundException exception) {
-            return Response.status(Response.Status.NOT_FOUND).entity(exception.getMessage()).build();
-        } catch (UsernameAlreadyExistsException exception) {
-            return Response.status(Response.Status.CONFLICT).entity(exception.getMessage()).build();
-        } catch (UserNotAdminException exception) {
-            return Response.status(Response.Status.FORBIDDEN).entity("User not authorized to update").build();
-        }
+        User updatedUser = userService.update(userToUpdate);
+        return Response.ok(UserMapper.toDTO(updatedUser)).build();
     }
 }

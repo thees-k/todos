@@ -6,8 +6,6 @@ import k.thees.dto.UserDTO;
 import k.thees.entity.Role;
 import k.thees.entity.User;
 import k.thees.mapper.UserMapper;
-import k.thees.security.UserNotAdminException;
-import k.thees.security.UserNotFoundException;
 import k.thees.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -86,32 +84,6 @@ class UserResourceTest {
             throw new RuntimeException(e);
         }
         assertEquals(userDTO.username, responseDTO.username);
-        verify(userService).update(any(User.class));
-    }
-
-    @Test
-    void updateUser_userNotFound_returnsNotFound() {
-        UpdateUserDTO userDTO = createUserDTO("Alice", "Alice", "alice@example.com", Role.REGULAR_USER_ID);
-
-        when(userService.update(any(User.class))).thenThrow(new UserNotFoundException(1L));
-
-        try (Response response = userResource.updateUser(1L, userDTO)) {
-            assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
-            assertEquals("User with ID 1 not found", response.getEntity());
-        }
-        verify(userService).update(any(User.class));
-    }
-
-    @Test
-    void updateUser_userNotAdmin_returnsForbidden() {
-        UpdateUserDTO userDTO = createUserDTO("Alice", "Alice", "alice@example.com", Role.REGULAR_USER_ID);
-
-        when(userService.update(any(User.class))).thenThrow(new UserNotAdminException());
-
-        try (Response response = userResource.updateUser(1L, userDTO)) {
-            assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
-            assertEquals("User not authorized to update", response.getEntity());
-        }
         verify(userService).update(any(User.class));
     }
 

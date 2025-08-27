@@ -9,6 +9,6 @@ public class UsernameAlreadyExistsExceptionMapper implements ExceptionMapper<Use
 
     @Override
     public Response toResponse(UsernameAlreadyExistsException exception) {
-        return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        return Response.status(Response.Status.CONFLICT).entity(exception.getMessage()).build();
     }
 }
