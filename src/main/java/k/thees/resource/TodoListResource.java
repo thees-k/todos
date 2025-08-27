@@ -35,11 +35,8 @@ public class TodoListResource {
     @GET
     @Path("/{id}")
     public Response getTodoList(@PathParam("id") Long id) {
-        return todoListService.findById(id)
-                              .map(TodoListMapper::toDTO)
-                              .map(Response::ok)
-                              .orElse(Response.status(Response.Status.NOT_FOUND))
-                              .build();
+        TodoList todoList = todoListService.findByIdOrThrow(id);
+        return Response.ok().entity(TodoListMapper.toDTO(todoList)).build();
     }
 
     @POST

@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -45,26 +44,16 @@ class TodoListResourceTest {
 
     @Test
     void getTodoList_existingId_returnsOkResponseWithTodoListDTO() {
-        TodoList list = createTodoList(1L, "List 1");
-        TodoListDTO expectedDTO = TodoListMapper.toDTO(list);
-        when(todoListService.findById(1L)).thenReturn(Optional.of(list));
+        TodoList todoList = createTodoList(1L, "List 1");
+        TodoListDTO expectedDTO = TodoListMapper.toDTO(todoList);
+        when(todoListService.findByIdOrThrow(1L)).thenReturn(todoList);
 
         Response response = todoListResource.getTodoList(1L);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         TodoListDTO dto = (TodoListDTO) response.getEntity();
         assertEquals(expectedDTO, dto);
-        verify(todoListService).findById(1L);
-    }
-
-    @Test
-    void getTodoList_nonExistingId_returnsNotFound() {
-        when(todoListService.findById(99L)).thenReturn(Optional.empty());
-
-        Response response = todoListResource.getTodoList(99L);
-
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
-        verify(todoListService).findById(99L);
+        verify(todoListService).findByIdOrThrow(1L);
     }
 
     @Test

@@ -7,10 +7,10 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import k.thees.entity.TodoList;
 import k.thees.security.SecurityService;
+import k.thees.security.TodoListNotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @ApplicationScoped
 @Transactional
@@ -26,8 +26,13 @@ public class TodoListService {
         return entityManager.createQuery("SELECT t FROM TodoList t ORDER BY t.id", TodoList.class).getResultList();
     }
 
-    public Optional<TodoList> findById(Long id) {
-        return Optional.ofNullable(entityManager.find(TodoList.class, id));
+    public TodoList findByIdOrThrow(Long id) throws TodoListNotFoundException {
+        TodoList todoList = entityManager.find(TodoList.class, id);
+        if (todoList == null) {
+            throw new TodoListNotFoundException(id);
+        } else {
+            return todoList;
+        }
     }
 
     public TodoList create(TodoList todoList) {
