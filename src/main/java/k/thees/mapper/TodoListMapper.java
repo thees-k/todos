@@ -1,6 +1,8 @@
 package k.thees.mapper;
 
+import k.thees.dto.CreateTodoListDTO;
 import k.thees.dto.TodoListDTO;
+import k.thees.dto.UpdateTodoListDTO;
 import k.thees.entity.Task;
 import k.thees.entity.TodoList;
 import k.thees.entity.User;
@@ -31,26 +33,31 @@ public class TodoListMapper {
         return dto;
     }
 
-    public static TodoList toEntity(TodoListDTO dto) {
+    public static TodoList toEntity(CreateTodoListDTO dto) {
         if (dto == null) return null;
         TodoList todoList = new TodoList();
-        todoList.setId(dto.id);
         if (dto.ownerId != null) {
-            User owner = new User();
-            owner.setId(dto.ownerId);
+            User owner = new User(dto.ownerId);
             todoList.setOwner(owner);
         }
         todoList.setName(dto.name);
         todoList.setDescription(dto.description);
         todoList.setPublic(dto.isPublic);
         todoList.setDone(dto.isDone);
-        todoList.setCreatedAt(dto.createdAt);
-        todoList.setUpdatedAt(dto.updatedAt);
-        if (dto.updatedById != null) {
-            User updatedBy = new User();
-            updatedBy.setId(dto.updatedById);
-            todoList.setUpdatedBy(updatedBy);
+        return todoList;
+    }
+
+    public static TodoList toEntity(UpdateTodoListDTO dto) {
+        if (dto == null) return null;
+        TodoList todoList = new TodoList();
+        if (dto.ownerId != null) {
+            User owner = new User(dto.ownerId);
+            todoList.setOwner(owner);
         }
+        todoList.setName(dto.name);
+        todoList.setDescription(dto.description);
+        todoList.setPublic(dto.isPublic);
+        todoList.setDone(dto.isDone);
         // Tasks are not set here because DTO only contains task IDs; setting tasks requires fetching entities
         return todoList;
     }

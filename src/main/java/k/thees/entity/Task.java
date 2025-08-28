@@ -103,6 +103,14 @@ public class Task {
         this.todoLists = todoLists;
     }
 
+    public Task() {
+
+    }
+
+    public Task(long id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

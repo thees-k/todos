@@ -6,14 +6,13 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import k.thees.dto.CreateTodoListDTO;
 import k.thees.dto.TodoListDTO;
+import k.thees.dto.UpdateTodoListDTO;
 import k.thees.entity.TodoList;
-import k.thees.entity.User;
 import k.thees.mapper.TodoListMapper;
 import k.thees.service.TodoListService;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Path("/todolists")
 @Produces(MediaType.APPLICATION_JSON)
@@ -28,7 +27,7 @@ public class TodoListResource {
         List<TodoList> todoLists = todoListService.findAll();
         List<TodoListDTO> dtos = todoLists.stream()
                                           .map(TodoListMapper::toDTO)
-                                          .collect(Collectors.toList());
+                                          .toList();
         return Response.ok(dtos).build();
     }
 
@@ -40,23 +39,8 @@ public class TodoListResource {
     }
 
     @POST
-    public Response createTodoList(TodoListDTO todoListDTO) {
-        TodoList todoList = TodoListMapper.toEntity(todoListDTO);
-        TodoList created = todoListService.create(todoList);
-        TodoListDTO createdDTO = TodoListMapper.toDTO(created);
-        return Response.created(URI.create("/api/todolists/" + createdDTO.id)).entity(createdDTO).build();
-    }
-
-    @POST
     public Response createTodoList(CreateTodoListDTO todoListDTO) {
-
-        TodoList todoList = new TodoList();
-        todoList.setName(todoListDTO.name);
-        todoList.setDescription(todoListDTO.description);
-        todoList.setDone(todoListDTO.isDone);
-        todoList.setOwner(new User(todoListDTO.ownerId));
-        todoList.setPublic(todoListDTO.isPublic);
-
+        TodoList todoList = TodoListMapper.toEntity(todoListDTO);
         TodoList created = todoListService.create(todoList);
         TodoListDTO createdDTO = TodoListMapper.toDTO(created);
         return Response.created(URI.create("/api/todolists/" + createdDTO.id)).entity(createdDTO).build();
@@ -64,9 +48,9 @@ public class TodoListResource {
 
     @PUT
     @Path("/{id}")
-    public Response updateTodoList(@PathParam("id") Long id, TodoListDTO todoListDTO) {
-        todoListDTO.id = id; // set id from path param
-        TodoList todoList = TodoListMapper.toEntity(todoListDTO);
+    public Response updateTodoList(@PathParam("id") Long id, UpdateTodoListDTO dto) {
+        TodoList todoList = TodoListMapper.toEntity(dto);
+        todoList.setId(id);
         TodoList updated = todoListService.update(todoList);
         TodoListDTO updatedDTO = TodoListMapper.toDTO(updated);
         return Response.ok(updatedDTO).build();
@@ -75,8 +59,7 @@ public class TodoListResource {
     @DELETE
     @Path("/{id}")
     public Response deleteTodoList(@PathParam("id") Long id) {
-        boolean deleted = todoListService.delete(id);
-        return deleted ? Response.noContent().build()
-                : Response.status(Response.Status.NOT_FOUND).build();
+        todoListService.delete(id);
+        return Response.noContent().build();
     }
 }

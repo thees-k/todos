@@ -36,26 +36,30 @@ public class TodoListService {
     }
 
     public TodoList create(TodoList todoList) {
-        LocalDateTime now = LocalDateTime.now();
-        todoList.setCreatedAt(now);
-        todoList.setUpdatedAt(now);
-        todoList.setUpdatedBy(securityService.getLoggedInUserOrThrow());
+        setCreatedAtUpdatedAtAndUpdatedBy(todoList);
         entityManager.persist(todoList);
         return todoList;
     }
 
-    public TodoList update(TodoList todoList) {
-        todoList.setUpdatedAt(LocalDateTime.now());
+    private void setCreatedAtUpdatedAtAndUpdatedBy(TodoList todoList) {
+        LocalDateTime now = LocalDateTime.now();
+        todoList.setCreatedAt(now);
+        todoList.setUpdatedAt(now);
         todoList.setUpdatedBy(securityService.getLoggedInUserOrThrow());
+    }
+
+    public TodoList update(TodoList todoList) {
+        setUpdatedAtAndUpdatedBy(todoList);
         return entityManager.merge(todoList);
     }
 
-    public boolean delete(Long id) {
-        TodoList todoList = entityManager.find(TodoList.class, id);
-        if (todoList != null) {
-            entityManager.remove(todoList);
-            return true;
-        }
-        return false;
+    private void setUpdatedAtAndUpdatedBy(TodoList todoList) {
+        todoList.setUpdatedAt(LocalDateTime.now());
+        todoList.setUpdatedBy(securityService.getLoggedInUserOrThrow());
+    }
+
+    public void delete(Long id) {
+        TodoList todoList = findByIdOrThrow(id);
+        entityManager.remove(todoList);
     }
 }

@@ -3,6 +3,7 @@ package k.thees.resource;
 import jakarta.ws.rs.core.Response;
 import k.thees.dto.CreateTodoListDTO;
 import k.thees.dto.TodoListDTO;
+import k.thees.dto.UpdateTodoListDTO;
 import k.thees.entity.TodoList;
 import k.thees.mapper.TodoListMapper;
 import k.thees.service.TodoListService;
@@ -81,7 +82,7 @@ class TodoListResourceTest {
 
     @Test
     void updateTodoList_shouldReturnOkResponseWithUpdatedTodoListDTO() {
-        TodoListDTO inputDTO = new TodoListDTO();
+        UpdateTodoListDTO inputDTO = new UpdateTodoListDTO();
         inputDTO.name = "Updated List";
         TodoListMapper.toEntity(inputDTO);
 
@@ -102,7 +103,7 @@ class TodoListResourceTest {
 
     @Test
     void deleteTodoList_existingId_returnsNoContent() {
-        when(todoListService.delete(1L)).thenReturn(true);
+        doNothing().when(todoListService).delete(1L);
 
         try (Response response = todoListResource.deleteTodoList(1L)) {
             assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
@@ -110,18 +111,6 @@ class TodoListResourceTest {
             throw new RuntimeException(e);
         }
         verify(todoListService).delete(1L);
-    }
-
-    @Test
-    void deleteTodoList_nonExistingId_returnsNotFound() {
-        when(todoListService.delete(99L)).thenReturn(false);
-
-        try (Response response = todoListResource.deleteTodoList(99L)) {
-            assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        verify(todoListService).delete(99L);
     }
 
     private TodoList createTodoList(Long id, String name) {
