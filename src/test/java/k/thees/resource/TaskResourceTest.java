@@ -13,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -46,24 +45,14 @@ class TaskResourceTest {
     void getTask_existingId_returnsOkResponseWithTaskDTO() {
         Task task = createTask(1L, "Task 1");
         TaskDTO expectedDTO = TaskMapper.toDTO(task);
-        when(taskService.findById(1L)).thenReturn(Optional.of(task));
+        when(taskService.findByIdOrThrow(1L)).thenReturn(task);
 
         Response response = taskResource.getTask(1L);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         TaskDTO dto = (TaskDTO) response.getEntity();
         assertEquals(expectedDTO, dto);
-        verify(taskService).findById(1L);
-    }
-
-    @Test
-    void getTask_nonExistingId_returnsNotFound() {
-        when(taskService.findById(99L)).thenReturn(Optional.empty());
-
-        Response response = taskResource.getTask(99L);
-
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
-        verify(taskService).findById(99L);
+        verify(taskService).findByIdOrThrow(1L);
     }
 
     @Test

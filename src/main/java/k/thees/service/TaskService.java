@@ -7,10 +7,10 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import k.thees.entity.Task;
 import k.thees.security.SecurityService;
+import k.thees.security.TaskNotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @ApplicationScoped
 @Transactional
@@ -26,23 +26,36 @@ public class TaskService {
         return entityManager.createQuery("SELECT t FROM Task t ORDER BY t.id", Task.class).getResultList();
     }
 
-    public Optional<Task> findById(Long id) {
-        return Optional.ofNullable(entityManager.find(Task.class, id));
+    public Task findByIdOrThrow(Long id) {
+        Task task = entityManager.find(Task.class, id);
+        if (task == null) {
+            throw new TaskNotFoundException(id);
+        } else {
+            return task;
+        }
     }
 
     public Task create(Task task) {
-        LocalDateTime now = LocalDateTime.now();
-        task.setUpdatedAt(now);
-        task.setCreatedAt(now);
-        task.setUpdatedBy(securityService.getLoggedInUserOrThrow());
+        setCreatedAtUpdatedAtAndUpdatedBy(task);
         entityManager.persist(task);
         return task;
     }
 
+    private void setCreatedAtUpdatedAtAndUpdatedBy(Task task) {
+        LocalDateTime now = LocalDateTime.now();
+        task.setUpdatedAt(now);
+        task.setCreatedAt(now);
+        task.setUpdatedBy(securityService.getLoggedInUserOrThrow());
+    }
+
     public Task update(Task task) {
+        setUpdatedAtAndUpdatedBy(task);
+        return entityManager.merge(task);
+    }
+
+    private void setUpdatedAtAndUpdatedBy(Task task) {
         task.setUpdatedAt(LocalDateTime.now());
         task.setUpdatedBy(securityService.getLoggedInUserOrThrow());
-        return entityManager.merge(task);
     }
 
     public boolean delete(Long id) {

@@ -33,11 +33,8 @@ public class TaskResource {
     @GET
     @Path("/{id}")
     public Response getTask(@PathParam("id") Long id) {
-        return taskService.findById(id)
-                          .map(TaskMapper::toDTO)
-                          .map(Response::ok)
-                          .orElse(Response.status(Response.Status.NOT_FOUND))
-                          .build();
+        Task task = taskService.findByIdOrThrow(id);
+        return Response.ok().entity(TaskMapper.toDTO(task)).build();
     }
 
     @POST

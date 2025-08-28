@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 
 import static k.thees.testutil.TestDataFactory.createUser;
+import static k.thees.testutil.ValidationUtils.validateIsBetween;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -44,12 +45,8 @@ class TaskServiceTest {
         Task createdTask = taskService.create(task);
         LocalDateTime afterCreate = LocalDateTime.now();
 
-        assertNotNull(createdTask.getCreatedAt());
-        assertNotNull(createdTask.getUpdatedAt());
-        assertFalse(createdTask.getCreatedAt().isBefore(beforeCreate));
-        assertFalse(createdTask.getCreatedAt().isAfter(afterCreate));
-        assertFalse(createdTask.getUpdatedAt().isBefore(beforeCreate));
-        assertFalse(createdTask.getUpdatedAt().isAfter(afterCreate));
+        validateIsBetween(createdTask.getCreatedAt(), beforeCreate, afterCreate);
+        validateIsBetween(createdTask.getUpdatedAt(), beforeCreate, afterCreate);
 
         assertNotNull(createdTask.getUpdatedBy());
         assertEquals("Alice", createdTask.getUpdatedBy().getUsername());
