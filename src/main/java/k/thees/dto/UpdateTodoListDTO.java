@@ -5,9 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import k.thees.validation.ValidationConstraints;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 public class UpdateTodoListDTO {
     public Long ownerId;
@@ -26,17 +24,15 @@ public class UpdateTodoListDTO {
     @NotNull
     public Boolean isDone;
 
-    public Set<Long> taskIds = new HashSet<>();
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         UpdateTodoListDTO that = (UpdateTodoListDTO) o;
-        return Objects.equals(ownerId, that.ownerId) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(isPublic, that.isPublic) && Objects.equals(isDone, that.isDone) && Objects.equals(taskIds, that.taskIds);
+        return Objects.equals(ownerId, that.ownerId) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(isPublic, that.isPublic) && Objects.equals(isDone, that.isDone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ownerId, name, description, isPublic, isDone, taskIds);
+        return Objects.hash(ownerId, name, description, isPublic, isDone);
     }
 }

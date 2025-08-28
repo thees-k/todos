@@ -58,7 +58,6 @@ public class TodoListMapper {
         todoList.setDescription(dto.description);
         todoList.setPublic(dto.isPublic);
         todoList.setDone(dto.isDone);
-        // Tasks are not set here because DTO only contains task IDs; setting tasks requires fetching entities
         return todoList;
     }
 }
