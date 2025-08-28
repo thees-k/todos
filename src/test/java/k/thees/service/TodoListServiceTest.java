@@ -5,6 +5,7 @@ import k.thees.entity.Role;
 import k.thees.entity.TodoList;
 import k.thees.entity.User;
 import k.thees.security.SecurityService;
+import k.thees.security.TodoListNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,8 +18,7 @@ import java.util.HashSet;
 
 import static k.thees.testutil.TestDataFactory.createUser;
 import static k.thees.testutil.ValidationUtils.validateIsBetween;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,6 +36,26 @@ class TodoListServiceTest {
     @BeforeEach
     void setUp() {
         lenient().when(securityService.getLoggedInUserOrThrow()).thenReturn(createUser(1L, "Alice", "alice@example.com", "hash1", Role.REGULAR_USER_ID));
+    }
+
+    @Test
+    void findByIdOrThrow_shouldReturnTodoList_whenFound() {
+        TodoList todoList = createTodoList(1L, "List 1", "Description", true, false);
+        when(entityManager.find(TodoList.class, 1L)).thenReturn(todoList);
+
+        TodoList result = todoListService.findByIdOrThrow(1L);
+
+        assertEquals(todoList, result);
+        verify(entityManager).find(TodoList.class, 1L);
+    }
+
+    @Test
+    void findByIdOrThrow_shouldThrowTodoListNotFoundException_whenNotFound() {
+        when(entityManager.find(TodoList.class, 99L)).thenReturn(null);
+
+        TodoListNotFoundException ex = assertThrows(TodoListNotFoundException.class, () -> todoListService.findByIdOrThrow(99L));
+        assertEquals("TodoList with ID 99 not found", ex.getMessage());
+        verify(entityManager).find(TodoList.class, 99L);
     }
 
     @Test

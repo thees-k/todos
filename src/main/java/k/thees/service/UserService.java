@@ -39,17 +39,20 @@ public class UserService {
     }
 
     public User create(User user) {
-        User admin = securityService.getLoggedInAdminUserOrThrow();
-        user.setUpdatedBy(admin);
-        var now = LocalDateTime.now();
-        user.setUpdatedAt(now);
-        user.setCreatedAt(now);
+        setCreatedAtUpdatedAtAndUpdatedBy(user);
         entityManager.persist(user);
         return user;
     }
 
-    public void delete(Long id) {
+    private void setCreatedAtUpdatedAtAndUpdatedBy(User user) {
+        LocalDateTime now = LocalDateTime.now();
+        user.setUpdatedAt(now);
+        user.setCreatedAt(now);
+        User admin = securityService.getLoggedInAdminUserOrThrow();
+        user.setUpdatedBy(admin);
+    }
 
+    public void delete(Long id) {
         User user = findByIdOrThrow(id);
         User currentUser = securityService.getLoggedInUserOrThrow();
         if (currentUser.equals(user) || currentUser.isAdministrator()) {

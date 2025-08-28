@@ -41,6 +41,26 @@ class UserServiceTest {
     }
 
     @Test
+    void findByIdOrThrow_shouldReturnTodoList_whenFound() {
+        User user = createUser(1, "Alice", "alice@example.com", "hash1", Role.REGULAR_USER_ID);
+        when(entityManager.find(User.class, 1L)).thenReturn(user);
+
+        User result = userService.findByIdOrThrow(1L);
+
+        assertEquals(user, result);
+        verify(entityManager).find(User.class, 1L);
+    }
+
+    @Test
+    void findByIdOrThrow_shouldThrowUserNotFoundException_whenNotFound() {
+        when(entityManager.find(User.class, 99L)).thenReturn(null);
+
+        UserNotFoundException ex = assertThrows(UserNotFoundException.class, () -> userService.findByIdOrThrow(99L));
+        assertEquals("User with ID 99 not found", ex.getMessage());
+        verify(entityManager).find(User.class, 99L);
+    }
+
+    @Test
     void create_shouldUpdateCreatedAtAndUpdatedAtToCurrentOrLater() {
         User alice = createUser(1, "Alice", "alice@example.com", "hash1", Role.REGULAR_USER_ID);
 
