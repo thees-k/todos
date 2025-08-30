@@ -2,6 +2,7 @@ package k.thees.mapper;
 
 import k.thees.dto.TaskDTO;
 import k.thees.entity.Task;
+import k.thees.entity.TodoList;
 import k.thees.entity.User;
 
 public class TaskMapper {
@@ -12,6 +13,8 @@ public class TaskMapper {
         dto.id = task.getId();
         dto.title = task.getTitle();
         dto.description = task.getDescription();
+        dto.todoListId = task.getTodoList().getId();
+        dto.priority = task.getPriority();
         dto.done = task.getDone();
         dto.createdAt = task.getCreatedAt();
         dto.updatedAt = task.getUpdatedAt();
@@ -25,6 +28,8 @@ public class TaskMapper {
         task.setId(dto.id);
         task.setTitle(dto.title);
         task.setDescription(dto.description);
+        task.setTodoList(new TodoList(dto.todoListId));
+        task.setPriority(dto.priority);
         task.setDone(dto.done);
         task.setCreatedAt(dto.createdAt);
         task.setUpdatedAt(dto.updatedAt);

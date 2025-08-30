@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "tasks")
@@ -20,6 +19,13 @@ public class Task {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "todo_list_id", nullable = false)
+    private TodoList todoList;
+
+    @Column(columnDefinition = "INTEGER", nullable = false)
+    private Integer priority;
+
     @Column(name = "is_done")
     private Boolean isDone = false;
 
@@ -32,9 +38,6 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "updated_by")
     private User updatedBy;
-
-    @ManyToMany(mappedBy = "tasks")
-    private Set<TodoList> todoLists;
 
     public Long getId() {
         return id;
@@ -58,6 +61,22 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public TodoList getTodoList() {
+        return todoList;
+    }
+
+    public void setTodoList(TodoList todoList) {
+        this.todoList = todoList;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 
     public Boolean getDone() {
@@ -93,14 +112,6 @@ public class Task {
 
     public void setUpdatedBy(User updatedBy) {
         this.updatedBy = updatedBy;
-    }
-
-    public Set<TodoList> getTodoLists() {
-        return todoLists;
-    }
-
-    public void setTodoLists(Set<TodoList> todoLists) {
-        this.todoLists = todoLists;
     }
 
     public Task() {

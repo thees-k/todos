@@ -3,6 +3,7 @@ package k.thees.resource;
 import jakarta.ws.rs.core.Response;
 import k.thees.dto.TaskDTO;
 import k.thees.entity.Task;
+import k.thees.entity.TodoList;
 import k.thees.mapper.TaskMapper;
 import k.thees.service.TaskService;
 import org.junit.jupiter.api.Test;
@@ -59,6 +60,7 @@ class TaskResourceTest {
     void createTask_shouldReturnCreatedResponseWithLocationAndEntity() {
         TaskDTO inputDTO = new TaskDTO();
         inputDTO.title = "New Task";
+        inputDTO.todoListId = 1L;
         TaskMapper.toEntity(inputDTO);
 
         Task createdTask = createTask(1L, "New Task");
@@ -81,6 +83,7 @@ class TaskResourceTest {
     void updateTask_shouldReturnOkResponseWithUpdatedTaskDTO() {
         TaskDTO inputDTO = new TaskDTO();
         inputDTO.title = "Updated Task";
+        inputDTO.todoListId = 1L;
         TaskMapper.toEntity(inputDTO);
 
         Task updatedTask = createTask(1L, "Updated Task");
@@ -126,6 +129,7 @@ class TaskResourceTest {
         Task task = new Task();
         task.setId(id);
         task.setTitle(title);
+        task.setTodoList(new TodoList(1L));
         return task;
     }
 }

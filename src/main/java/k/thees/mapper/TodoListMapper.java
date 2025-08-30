@@ -3,12 +3,8 @@ package k.thees.mapper;
 import k.thees.dto.CreateTodoListDTO;
 import k.thees.dto.TodoListDTO;
 import k.thees.dto.UpdateTodoListDTO;
-import k.thees.entity.Task;
 import k.thees.entity.TodoList;
 import k.thees.entity.User;
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class TodoListMapper {
 
@@ -24,12 +20,6 @@ public class TodoListMapper {
         dto.createdAt = todoList.getCreatedAt();
         dto.updatedAt = todoList.getUpdatedAt();
         dto.updatedById = todoList.getUpdatedBy() != null ? todoList.getUpdatedBy().getId() : null;
-        Set<Task> tasks = todoList.getTasks();
-        if (tasks != null) {
-            dto.taskIds = tasks.stream()
-                               .map(Task::getId)
-                               .collect(Collectors.toSet());
-        }
         return dto;
     }
 

@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 
 import static k.thees.testutil.TestDataFactory.createUser;
 import static k.thees.testutil.ValidationUtils.validateIsBetween;
@@ -119,7 +118,6 @@ class TodoListServiceTest {
         todoList.setDone(isDone);
         todoList.setOwner(new User());
         todoList.setUpdatedBy(new User());
-        todoList.setTasks(new HashSet<>());
         return todoList;
     }
 }

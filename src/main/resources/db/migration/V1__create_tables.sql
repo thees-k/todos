@@ -5,7 +5,6 @@ DROP SEQUENCE todo_lists_seq IF EXISTS;
 DROP SEQUENCE tasks_seq IF EXISTS;
 DROP SEQUENCE roles_seq IF EXISTS;
 
-DROP TABLE task_list_assignments IF EXISTS;
 DROP TABLE todo_lists IF EXISTS;
 DROP TABLE tasks IF EXISTS;
 DROP TABLE users IF EXISTS;
@@ -55,22 +54,13 @@ CREATE TABLE tasks (
   title VARCHAR(255) NOT NULL,
   description TEXT,
   is_done BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMP,
-  updated_at TIMESTAMP,
-  updated_by BIGINT,
-  CONSTRAINT fk_task_updatedby FOREIGN KEY (updated_by) REFERENCES users(id)
-);
-
-CREATE TABLE task_list_assignments (
-  task_id BIGINT NOT NULL,
-  list_id BIGINT NOT NULL,
+  todo_list_id BIGINT NOT NULL,
   priority INT NOT NULL DEFAULT 0,
   created_at TIMESTAMP,
   updated_at TIMESTAMP,
   updated_by BIGINT,
-  PRIMARY KEY (task_id, list_id),
-  CONSTRAINT fk_tla_task FOREIGN KEY (task_id) REFERENCES tasks(id),
-  CONSTRAINT fk_tla_list FOREIGN KEY (list_id) REFERENCES todo_lists(id),
-  CONSTRAINT fk_tla_updatedby FOREIGN KEY (updated_by) REFERENCES users(id)
+  CONSTRAINT fk_todo_list FOREIGN KEY (todo_list_id) REFERENCES todo_lists(id),
+  CONSTRAINT fk_task_updatedby FOREIGN KEY (updated_by) REFERENCES users(id)
 );
+
 

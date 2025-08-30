@@ -13,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 
 import static k.thees.testutil.TestDataFactory.createUser;
 import static k.thees.testutil.ValidationUtils.validateIsBetween;
@@ -91,7 +90,6 @@ class TaskServiceTest {
         task.setDescription("Description for " + title);
         task.setDone(false);
         task.setUpdatedBy(new User());
-        task.setTodoLists(new HashSet<>());
         return task;
     }
 }

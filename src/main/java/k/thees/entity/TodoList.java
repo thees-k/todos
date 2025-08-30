@@ -3,9 +3,7 @@ package k.thees.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "todo_lists")
@@ -41,13 +39,13 @@ public class TodoList {
     @JoinColumn(name = "updated_by")
     private User updatedBy;
 
-    @ManyToMany
-    @JoinTable(
-            name = "task_list_assignments",
-            joinColumns = @JoinColumn(name = "list_id"),
-            inverseJoinColumns = @JoinColumn(name = "task_id")
-    )
-    private Set<Task> tasks = new HashSet<>();
+    public TodoList() {
+
+    }
+
+    public TodoList(long id) {
+        this.id = id;
+    }
 
     public Long getId() {
         return id;
@@ -103,14 +101,6 @@ public class TodoList {
 
     public void setUpdatedBy(User updatedBy) {
         this.updatedBy = updatedBy;
-    }
-
-    public Set<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(Set<Task> tasks) {
-        this.tasks = tasks;
     }
 
     public LocalDateTime getCreatedAt() {

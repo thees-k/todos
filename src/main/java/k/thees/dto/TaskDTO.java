@@ -20,6 +20,12 @@ public class TaskDTO {
     public String description;
 
     @NotNull
+    public Long todoListId;
+
+    @NotNull
+    public Integer priority;
+
+    @NotNull
     public Boolean done;
 
     public LocalDateTime createdAt;
