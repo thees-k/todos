@@ -1,6 +1,7 @@
 package k.thees.resource;
 
 import jakarta.ws.rs.core.Response;
+import k.thees.dto.SaveTaskDTO;
 import k.thees.dto.TaskDTO;
 import k.thees.entity.Task;
 import k.thees.entity.TodoList;
@@ -58,7 +59,7 @@ class TaskResourceTest {
 
     @Test
     void createTask_shouldReturnCreatedResponseWithLocationAndEntity() {
-        TaskDTO inputDTO = new TaskDTO();
+        SaveTaskDTO inputDTO = new SaveTaskDTO();
         inputDTO.title = "New Task";
         inputDTO.todoListId = 1L;
         TaskMapper.toEntity(inputDTO);
@@ -81,7 +82,7 @@ class TaskResourceTest {
 
     @Test
     void updateTask_shouldReturnOkResponseWithUpdatedTaskDTO() {
-        TaskDTO inputDTO = new TaskDTO();
+        SaveTaskDTO inputDTO = new SaveTaskDTO();
         inputDTO.title = "Updated Task";
         inputDTO.todoListId = 1L;
         TaskMapper.toEntity(inputDTO);

@@ -7,7 +7,7 @@ import k.thees.validation.ValidationConstraints;
 
 import java.util.Objects;
 
-public class CreateTodoListDTO {
+public class SaveTodoListDTO {
     public Long ownerId;
 
     @NotBlank(message = "Name must not be blank")
@@ -27,7 +27,7 @@ public class CreateTodoListDTO {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        CreateTodoListDTO that = (CreateTodoListDTO) o;
+        SaveTodoListDTO that = (SaveTodoListDTO) o;
         return Objects.equals(ownerId, that.ownerId) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(isPublic, that.isPublic) && Objects.equals(isDone, that.isDone);
     }
 

@@ -1,5 +1,6 @@
 package k.thees.mapper;
 
+import k.thees.dto.SaveTaskDTO;
 import k.thees.dto.TaskDTO;
 import k.thees.entity.Task;
 import k.thees.entity.TodoList;
@@ -38,6 +39,17 @@ public class TaskMapper {
             updatedBy.setId(dto.updatedById);
             task.setUpdatedBy(updatedBy);
         }
+        return task;
+    }
+
+    public static Task toEntity(SaveTaskDTO dto) {
+        if (dto == null) return null;
+        Task task = new Task();
+        task.setTitle(dto.title);
+        task.setDescription(dto.description);
+        task.setTodoList(new TodoList(dto.todoListId));
+        task.setPriority(dto.priority);
+        task.setDone(dto.done);
         return task;
     }
 }

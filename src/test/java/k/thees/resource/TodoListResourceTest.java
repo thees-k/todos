@@ -1,9 +1,8 @@
 package k.thees.resource;
 
 import jakarta.ws.rs.core.Response;
-import k.thees.dto.CreateTodoListDTO;
+import k.thees.dto.SaveTodoListDTO;
 import k.thees.dto.TodoListDTO;
-import k.thees.dto.UpdateTodoListDTO;
 import k.thees.entity.TodoList;
 import k.thees.mapper.TodoListMapper;
 import k.thees.service.TodoListService;
@@ -60,7 +59,7 @@ class TodoListResourceTest {
     @Test
     void createTodoList_shouldReturnCreatedResponseWithLocationAndEntity() {
 
-        CreateTodoListDTO inputDTO = new CreateTodoListDTO();
+        SaveTodoListDTO inputDTO = new SaveTodoListDTO();
         inputDTO.name = "New List";
 
         TodoList createdList = createTodoList(1L, "New List");
@@ -82,7 +81,7 @@ class TodoListResourceTest {
 
     @Test
     void updateTodoList_shouldReturnOkResponseWithUpdatedTodoListDTO() {
-        UpdateTodoListDTO inputDTO = new UpdateTodoListDTO();
+        SaveTodoListDTO inputDTO = new SaveTodoListDTO();
         inputDTO.name = "Updated List";
         TodoListMapper.toEntity(inputDTO);
 

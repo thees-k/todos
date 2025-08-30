@@ -4,6 +4,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import k.thees.dto.SaveTaskDTO;
 import k.thees.dto.TaskDTO;
 import k.thees.entity.Task;
 import k.thees.mapper.TaskMapper;
@@ -38,7 +39,7 @@ public class TaskResource {
     }
 
     @POST
-    public Response createTask(TaskDTO taskDTO) {
+    public Response createTask(SaveTaskDTO taskDTO) {
         Task task = TaskMapper.toEntity(taskDTO);
         Task created = taskService.create(task);
         TaskDTO createdDTO = TaskMapper.toDTO(created);
@@ -47,9 +48,9 @@ public class TaskResource {
 
     @PUT
     @Path("/{id}")
-    public Response updateTask(@PathParam("id") Long id, TaskDTO taskDTO) {
-        taskDTO.id = id; // set id from path param
+    public Response updateTask(@PathParam("id") Long id, SaveTaskDTO taskDTO) {
         Task task = TaskMapper.toEntity(taskDTO);
+        task.setId(id);
         Task updated = taskService.update(task);
         TaskDTO updatedDTO = TaskMapper.toDTO(updated);
         return Response.ok(updatedDTO).build();

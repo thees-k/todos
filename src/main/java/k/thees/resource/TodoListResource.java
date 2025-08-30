@@ -4,9 +4,8 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import k.thees.dto.CreateTodoListDTO;
+import k.thees.dto.SaveTodoListDTO;
 import k.thees.dto.TodoListDTO;
-import k.thees.dto.UpdateTodoListDTO;
 import k.thees.entity.TodoList;
 import k.thees.mapper.TodoListMapper;
 import k.thees.service.TodoListService;
@@ -39,7 +38,7 @@ public class TodoListResource {
     }
 
     @POST
-    public Response createTodoList(CreateTodoListDTO todoListDTO) {
+    public Response createTodoList(SaveTodoListDTO todoListDTO) {
         TodoList todoList = TodoListMapper.toEntity(todoListDTO);
         TodoList created = todoListService.create(todoList);
         TodoListDTO createdDTO = TodoListMapper.toDTO(created);
@@ -48,7 +47,7 @@ public class TodoListResource {
 
     @PUT
     @Path("/{id}")
-    public Response updateTodoList(@PathParam("id") Long id, UpdateTodoListDTO dto) {
+    public Response updateTodoList(@PathParam("id") Long id, SaveTodoListDTO dto) {
         TodoList todoList = TodoListMapper.toEntity(dto);
         todoList.setId(id);
         TodoList updated = todoListService.update(todoList);
