@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
 
 import static k.thees.testutil.TestDataFactory.createUser;
 import static k.thees.testutil.ValidationUtils.validateIsBetween;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -54,20 +55,17 @@ class TaskServiceTest {
     @Test
     void update_shouldSetUpdatedAtAndUpdatedByToCurrentUser() {
         Task task = createTask(1L, "Task");
-        LocalDateTime beforeUpdate = LocalDateTime.now();
-
         when(entityManager.merge(task)).thenAnswer(invocation -> invocation.getArgument(0));
 
+        LocalDateTime beforeUpdate = LocalDateTime.now();
         Task updatedTask = taskService.update(task);
         LocalDateTime afterUpdate = LocalDateTime.now();
 
-        verify(entityManager).merge(task);
-        assertNotNull(updatedTask.getUpdatedAt());
-        assertFalse(updatedTask.getUpdatedAt().isBefore(beforeUpdate));
-        assertFalse(updatedTask.getUpdatedAt().isAfter(afterUpdate));
-
+        validateIsBetween(updatedTask.getUpdatedAt(), beforeUpdate, afterUpdate);
         assertNotNull(updatedTask.getUpdatedBy());
         assertEquals("Alice", updatedTask.getUpdatedBy().getUsername());
+
+        verify(entityManager).merge(task);
     }
 
     @Test

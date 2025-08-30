@@ -58,12 +58,8 @@ public class TaskService {
         task.setUpdatedBy(securityService.getLoggedInUserOrThrow());
     }
 
-    public boolean delete(Long id) {
-        Task task = entityManager.find(Task.class, id);
-        if (task != null) {
-            entityManager.remove(task);
-            return true;
-        }
-        return false;
+    public void delete(Long id) {
+        Task task = findByIdOrThrow(id);
+        entityManager.remove(task);
     }
 }

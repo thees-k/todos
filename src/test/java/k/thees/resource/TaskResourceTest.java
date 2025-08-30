@@ -103,27 +103,13 @@ class TaskResourceTest {
     }
 
     @Test
-    void deleteTask_existingId_returnsNoContent() {
-        when(taskService.delete(1L)).thenReturn(true);
-
+    void deleteTask_returnsNoContent() {
         try (Response response = taskResource.deleteTask(1L)) {
             assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         verify(taskService).delete(1L);
-    }
-
-    @Test
-    void deleteTask_nonExistingId_returnsNotFound() {
-        when(taskService.delete(99L)).thenReturn(false);
-
-        try (Response response = taskResource.deleteTask(99L)) {
-            assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        verify(taskService).delete(99L);
     }
 
     private Task createTask(Long id, String title) {

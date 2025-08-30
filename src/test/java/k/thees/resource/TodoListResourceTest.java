@@ -43,7 +43,7 @@ class TodoListResourceTest {
     }
 
     @Test
-    void getTodoList_existingId_returnsOkResponseWithTodoListDTO() {
+    void getTodoList_returnsOkResponseWithTodoListDTO() {
         TodoList todoList = createTodoList(1L, "List 1");
         TodoListDTO expectedDTO = TodoListMapper.toDTO(todoList);
         when(todoListService.findByIdOrThrow(1L)).thenReturn(todoList);
@@ -58,7 +58,6 @@ class TodoListResourceTest {
 
     @Test
     void createTodoList_shouldReturnCreatedResponseWithLocationAndEntity() {
-
         SaveTodoListDTO inputDTO = new SaveTodoListDTO();
         inputDTO.name = "New List";
 

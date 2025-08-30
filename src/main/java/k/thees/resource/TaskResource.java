@@ -59,8 +59,7 @@ public class TaskResource {
     @DELETE
     @Path("/{id}")
     public Response deleteTask(@PathParam("id") Long id) {
-        boolean deleted = taskService.delete(id);
-        return deleted ? Response.noContent().build()
-                : Response.status(Response.Status.NOT_FOUND).build();
+        taskService.delete(id);
+        return Response.noContent().build();
     }
 }
