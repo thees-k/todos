@@ -44,7 +44,7 @@ class TaskResourceTest {
     }
 
     @Test
-    void getTask_existingId_returnsOkResponseWithTaskDTO() {
+    void getTask_returnsOkResponseWithTaskDTO() {
         Task task = createTask(1L, "Task 1");
         TaskDTO expectedDTO = TaskMapper.toDTO(task);
         when(taskService.findByIdOrThrow(1L)).thenReturn(task);
