@@ -8,8 +8,8 @@ import jakarta.transaction.Transactional;
 import k.thees.entity.User;
 import k.thees.security.SecurityService;
 import k.thees.security.UserNotAdminException;
-import k.thees.security.UserNotFoundException;
-import k.thees.security.UsernameAlreadyExistsException;
+import k.thees.validation.UserNotFoundException;
+import k.thees.validation.UsernameAlreadyExistsException;
 
 import java.time.LocalDateTime;
 import java.util.List;

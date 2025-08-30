@@ -1,4 +1,4 @@
-package k.thees.security;
+package k.thees.validation;
 
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;

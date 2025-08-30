@@ -1,4 +1,4 @@
-package k.thees.security;
+package k.thees.validation;
 
 
 public class UserNotFoundException extends RuntimeException {

@@ -7,7 +7,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import k.thees.entity.TodoList;
 import k.thees.security.SecurityService;
-import k.thees.security.TodoListNotFoundException;
+import k.thees.validation.TodoListNotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;

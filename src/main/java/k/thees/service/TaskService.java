@@ -7,7 +7,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import k.thees.entity.Task;
 import k.thees.security.SecurityService;
-import k.thees.security.TaskNotFoundException;
+import k.thees.validation.TaskNotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;

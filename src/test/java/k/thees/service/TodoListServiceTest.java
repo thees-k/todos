@@ -5,7 +5,7 @@ import k.thees.entity.Role;
 import k.thees.entity.TodoList;
 import k.thees.entity.User;
 import k.thees.security.SecurityService;
-import k.thees.security.TodoListNotFoundException;
+import k.thees.validation.TodoListNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
